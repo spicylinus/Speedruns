@@ -1,55 +1,134 @@
 @import "tailwindcss";
 @import "../styles/design-styles.css";
 
-/* ===== DESIGN TOKENS (auto-populated from DESIGN.md) =====
-   To update: share your DESIGN.md with Claude Code and say
-   "update globals.css with these design tokens"
-*/
+@theme {
+  /* Social Linus Brand Colors */
+  --color-void: #0D0F12;
+  --color-cobalt: #1547E8;
+  --color-cobalt-hover: #0f3bc2;
+  --color-ember: #FF4D1C;
+  --color-ember-hover: #e0421a;
+  --color-white: #FFFFFF;
+  --color-frost: #EBF2FF;
+  --color-slate: #4A5568;
+
+  /* Legacy mappings for existing components */
+  --color-primary: #1547E8;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #4A5568;
+  --color-accent: #FF4D1C;
+  --color-background: #ffffff;
+  --color-surface: #EBF2FF;
+  --color-surface-muted: #f1f5f9;
+  --color-border: #e2e8f0;
+  --color-text: #0D0F12;
+  --color-text-muted: #4A5568;
+
+  /* Typography */
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'Space Mono', monospace;
+
+  /* Radii */
+  --radius-sm: 0.25rem;
+  --radius: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-base: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
 
 @layer base {
-  :root {
-    /* Colors — Primary Palette */
-    --color-primary: #3b82f6;
-    --color-primary-foreground: #ffffff;
-    --color-secondary: #64748b;
-    --color-secondary-foreground: #ffffff;
-    --color-accent: #f59e0b;
-    --color-accent-foreground: #1c1917;
-
-    /* Surfaces */
-    --color-background: #ffffff;
-    --color-surface: #f8fafc;
-    --color-surface-muted: #f1f5f9;
-    --color-border: #e2e8f0;
-
-    /* Text */
-    --color-text: #0f172a;
-    --color-text-muted: #64748b;
-
-    /* Typography */
-    --font-sans: 'Inter';
-    --font-display: 'Cal Sans';
-    --font-mono: 'JetBrains Mono';
-
-    /* Radii */
-    --radius-sm: 0.25rem;
-    --radius: 0.5rem;
-    --radius-lg: 0.75rem;
-    --radius-xl: 1rem;
-
-    /* Shadows */
-    --shadow-sm:   0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-base: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    --shadow-lg:   0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  html {
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
   }
 
-  .dark {
-    --color-primary: #60a5fa;
-    --color-background: #0f172a;
-    --color-surface: #1e293b;
-    --color-surface-muted: #334155;
-    --color-border: #475569;
-    --color-text: #f8fafc;
-    --color-text-muted: #94a3b8;
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-void);
+    background: var(--color-white);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (max-width: 768px) {
+    html {
+      scroll-snap-type: y proximity;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  .snap-section {
+    scroll-snap-align: start;
+    min-height: 100vh;
+  }
+
+  .snap-section--short {
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+  }
+
+  @media (max-width: 768px) {
+    .snap-section {
+      min-height: auto;
+      padding-top: 60px;
+      padding-bottom: 60px;
+    }
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  .text-void { color: var(--color-void); }
+  .text-cobalt { color: var(--color-cobalt); }
+  .text-ember { color: var(--color-ember); }
+  .text-slate { color: var(--color-slate); }
+  .text-frost { color: var(--color-frost); }
+
+  .bg-void { background-color: var(--color-void); }
+  .bg-cobalt { background-color: var(--color-cobalt); }
+  .bg-ember { background-color: var(--color-ember); }
+  .bg-frost { background-color: var(--color-frost); }
+
+  .border-cobalt { border-color: var(--color-cobalt); }
+  .border-ember { border-color: var(--color-ember); }
+  .border-slate { border-color: var(--color-slate); }
+  .border-frost { border-color: var(--color-frost); }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .stat-number {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 42px;
+    letter-spacing: -0.02em;
+  }
+
+  .will-animate {
+    will-change: transform, opacity;
   }
 }
