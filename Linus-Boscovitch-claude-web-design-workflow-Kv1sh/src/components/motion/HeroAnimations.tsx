@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect } from 'react'
-import { animate } from 'motion'
 
 export function HeroAnimations() {
   useEffect(() => {
@@ -9,11 +8,16 @@ export function HeroAnimations() {
     if (!elements.length) return
 
     elements.forEach((el, i) => {
-      animate(
-        el,
-        { opacity: [0, 1], y: [30, 0], scale: [0.97, 1] },
-        { duration: 0.7, delay: i * 0.12, easing: 'ease-out' }
-      )
+      el.style.opacity = '0'
+      el.style.transform = 'translateY(30px) scale(0.97)'
+
+      const delay = i * 120
+
+      setTimeout(() => {
+        el.style.transition = 'opacity 0.7s ease-out, transform 0.7s ease-out'
+        el.style.opacity = '1'
+        el.style.transform = 'translateY(0px) scale(1)'
+      }, delay)
     })
   }, [])
 
