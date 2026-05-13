@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2025-01-27-acacia',
+  apiVersion: '2026-04-22.dahlia',
 });
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -77,7 +77,7 @@ export async function POST(req: NextRequest) {
 
     case 'invoice.paid':
       const invoice = event.data.object as Stripe.Invoice;
-      if (invoice.subscription) {
+      if ((invoice as any).subscription) {
         const amount = invoice.amount_paid / 100;
         // If it's the first invoice, we might have already counted it in session.completed, 
         // but for simplicity and following instructions:

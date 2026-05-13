@@ -75,7 +75,7 @@ export async function runAudit(url: string): Promise<AuditResult> {
     
     // 2. Find Contact Page
     let contactUrl = findContactPageUrl($homepage, url);
-    let contactPageData = { html: '', warning: '' };
+    let contactPageData: any = { html: "", warning: "" };
     if (contactUrl && contactUrl !== url) {
       contactPageData = await fetchPageWithRetry(context, contactUrl, 1);
       if (contactPageData.warning) warnings.push(`Contact Page: ${contactPageData.warning}`);

@@ -4,21 +4,21 @@ export const CLIENT_DELIVERIES: Record<string, DeliveryData> = {
   'sd-plumbing': {
     clientName: 'S & D Plumbing',
     websiteUrl: 'https://sdplumbing.com',
-    tier: 'LeadGen',
+    tier: 'SEO',
     startDate: 'May 1, 2026',
     nextReportDate: 'June 1, 2026',
     activeWorkstreams: [
-      'Ski Slope Content Strategy',
       'Technical SEO Implementation',
       'Google Business Profile Posting',
       'Pillar Page Internal Linking',
-      'Answer Engine Optimization (AEO)'
+      'Local Keyword Targeting',
+      'Backlink Acquisition'
     ],
     metrics: [
-      { label: 'Qualified Leads', value: 42, change: 18, isPositive: true },
-      { label: 'GBP Views', value: '1.2K', change: 24, isPositive: true },
+      { label: 'Organic Traffic', value: '1.2K', change: 24, isPositive: true },
       { label: 'Keyword Rankings', value: 156, change: 5, isPositive: true },
-      { label: 'Avg Load Time', value: '1.2s', change: 12, isPositive: true }
+      { label: 'Avg Load Time', value: '1.2s', change: 12, isPositive: true },
+      { label: 'Qualified Leads', value: 42, change: 18, isPositive: true }
     ],
     billing: {
       monthlyRate: 1500,
@@ -107,20 +107,20 @@ export const CLIENT_DELIVERIES: Record<string, DeliveryData> = {
   'spruce-salon': {
     clientName: 'Spruce Salon',
     websiteUrl: 'https://www.sprucesalonaustin.com/',
-    tier: 'SEO',
+    tier: 'LeadGen',
     startDate: 'May 10, 2026',
     nextReportDate: 'June 10, 2026',
     activeWorkstreams: [
+      'Ski Slope Content Strategy',
       'Visual Brand Integration',
-      'Local Keyword Targeting',
-      'Backlink Acquisition',
+      'Answer Engine Optimization (AEO)',
       'On-Page Optimization',
       'Service Page Expansion'
     ],
     metrics: [
+      { label: 'Qualified Leads', value: 24, change: 100, isPositive: true },
       { label: 'Organic Traffic', value: '850', change: 12, isPositive: true },
       { label: 'Ranking Keywords', value: 42, change: 8, isPositive: true },
-      { label: 'Domain Authority', value: 14, change: 2, isPositive: true },
       { label: 'Mobile Score', value: 92, change: 45, isPositive: true }
     ],
     billing: {

@@ -4,7 +4,7 @@ const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || 'sk_test_51P...'; // 
 const HOST = process.env.NEXT_PUBLIC_HOST || 'http://localhost:3000';
 
 export const stripe = new Stripe(STRIPE_SECRET_KEY, {
-  apiVersion: '2025-01-27-acacia', // Or latest
+  apiVersion: '2026-04-22.dahlia', // Or latest
 });
 
 export class StripeService {
