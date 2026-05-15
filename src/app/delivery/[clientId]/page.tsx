@@ -42,7 +42,7 @@ export default function ClientDeliveryDashboard() {
       <header className="bg-white border-b border-slate-200 px-6 py-4 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <Link href="/delivery" className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
+            <Link href="/delivery/" className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
               <ArrowLeft size={20} className="text-slate-600" />
             </Link>
             <div>

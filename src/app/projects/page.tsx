@@ -8,7 +8,7 @@ const ACTIVE_PROJECTS = [
   {
     id: 'spruce-salon',
     name: 'Spruce Salon',
-    url: '/projects/spruce-salon',
+    url: '/projects/spruce-salon/',
     style: 'Editorial',
     status: 'Live',
     tier: 'Lead Gen ($1,900/mo)'
@@ -16,7 +16,7 @@ const ACTIVE_PROJECTS = [
   {
     id: 'sd-plumbing',
     name: 'S & D Plumbing',
-    url: '/projects/sd-plumbing',
+    url: '/projects/sd-plumbing/',
     style: 'Swiss',
     status: 'Live',
     tier: 'SEO ($1,500/mo)'

@@ -85,9 +85,9 @@ export default function Home() {
             <h1 className="text-2xl font-bold text-primary">RevFi</h1>
           </div>
           <div className="hidden md:flex items-center gap-6 text-sm font-semibold text-text-secondary uppercase tracking-widest">
-            <Link href="/projects" className="hover:text-primary transition-colors text-accent">Portfolio</Link>
-            <Link href="/delivery" className="hover:text-primary transition-colors">Client Portal</Link>
-            <a href="#" className="px-4 py-2 bg-slate-100 text-primary rounded-lg hover:bg-slate-200 transition-all">Support</a>
+            <Link href="/projects/" className="hover:text-primary transition-colors text-accent">Portfolio</Link>
+            <Link href="/delivery/" className="hover:text-primary transition-colors">Client Portal</Link>
+            <a href="mailto:support@sociallinus.com" className="px-4 py-2 bg-slate-100 text-primary rounded-lg hover:bg-slate-200 transition-all">Support</a>
           </div>
         </div>
       </header>
@@ -279,7 +279,7 @@ export default function Home() {
                   icon={Layout} 
                   title="Grand Slam Bundle" 
                   description="Website Redesign + 90-Day Lead Gen Launch. The ultimate growth machine with a $5,000 revenue guarantee." 
-                  impact="2x - 5x Leads" isPopular={true} href="/upsell/grand-slam-bundle"
+                  impact="2x - 5x Leads" isPopular={true} href="/upsell/grand-slam-bundle/"
                   priceRange="$6,000 (BNPL Available)"
                 />
                 <ServiceCard 
@@ -351,6 +351,15 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      {/* Footer Disclaimer */}
+      <footer className="py-12 border-t border-slate-100 mt-12 bg-surface/50">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <p className="text-slate-400 text-sm font-medium">
+            RevFi is owned by Social Linus Web Services, LLC.
+          </p>
+        </div>
+      </footer>
     </main>
   );
 }

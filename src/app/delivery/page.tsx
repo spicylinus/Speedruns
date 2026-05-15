@@ -21,7 +21,7 @@ export default function ClientSelectorPage() {
           {Object.entries(CLIENT_DELIVERIES).map(([id, client]) => (
             <Link 
               key={id} 
-              href={`/delivery/${id}`}
+              href={`/delivery/${id}/`}
               className="group bg-white p-8 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl hover:border-primary/20 transition-all flex flex-col"
             >
               <div className="flex justify-between items-start mb-6">

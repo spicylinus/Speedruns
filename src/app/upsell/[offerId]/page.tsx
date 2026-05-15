@@ -130,7 +130,7 @@ export default function UpsellPage() {
             Once the deposit is confirmed, we'll start building your growth engine immediately.
           </p>
           <button 
-            onClick={() => router.push('/delivery')}
+            onClick={() => router.push('/delivery/')}
             className="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold hover:bg-slate-800 transition-all"
           >
             Go to Client Dashboard
