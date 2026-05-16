@@ -93,7 +93,7 @@ export default function SpruceSalonMockup() {
           className="w-full aspect-[21/9] bg-[var(--color-surface-muted)] overflow-hidden relative"
         >
           <img 
-            src="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=2000&auto=format&fit=crop" 
+            src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?q=80&w=2000&auto=format&fit=crop" 
             alt="Salon Interior" 
             className="w-full h-full object-cover opacity-80"
           />
@@ -117,19 +117,19 @@ export default function SpruceSalonMockup() {
                 name: 'Editorial Cut', 
                 price: '$95+', 
                 desc: 'Precision cutting techniques designed for longevity and effortless style.',
-                img: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=800&auto=format&fit=crop'
+                img: 'https://images.unsplash.com/photo-1562322140-8baeececf3df?q=80&w=800&auto=format&fit=crop'
               },
               { 
                 name: 'Lived-in Color', 
                 price: '$180+', 
                 desc: 'Bespoke hand-painted techniques for natural, sun-kissed dimension.',
-                img: 'https://images.unsplash.com/photo-1492162300535-c6db6e0a8c3e?q=80&w=800&auto=format&fit=crop'
+                img: 'https://images.unsplash.com/photo-1605497788044-5a32c7078486?q=80&w=800&auto=format&fit=crop'
               },
               { 
                 name: 'The Ritual', 
                 price: '$75+', 
                 desc: 'Deep conditioning treatment paired with a signature blowout.',
-                img: 'https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?q=80&w=800&auto=format&fit=crop'
+                img: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=800&auto=format&fit=crop'
               }
             ].map((s, i) => (
               <motion.div 
