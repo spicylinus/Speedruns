@@ -6,6 +6,22 @@ are documented here so they never need to be re-explained.
 
 ---
 
+## First Step: Read BUSINESS.md
+
+Before writing any copy, headlines, service descriptions, testimonials, stats, or contact info —
+read `BUSINESS.md` in this project folder. It is the single source of truth for all factual claims
+about Social Linus.
+
+**Never invent or assume:**
+- Proof points, metrics, or stats not in BUSINESS.md
+- Testimonial quotes not in BUSINESS.md
+- Service descriptions, pricing, or ICP details not in BUSINESS.md
+- Business history or founder details not in BUSINESS.md
+
+If something isn't in BUSINESS.md, ask before using it.
+
+---
+
 ## Project Identity
 
 **Client:** Social Linus Web Services — Atlanta, GA

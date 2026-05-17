@@ -24,6 +24,36 @@ proven there is available as a starting point for new clients.
 
 ---
 
+## Business Context File (BUSINESS.md)
+
+Every client project has a `BUSINESS.md` file in its root folder. **This is the source of truth for all copy on the site.** Claude Code reads it before writing any page content, headline, testimonial, or stat.
+
+### What it contains
+- Business identity (name, tagline, location, contact)
+- Services (what they deliver, who needs it, pricing context)
+- Ideal Client Profile (ICP) — industry, deal size, pain points
+- Proof points (years in business, metrics, certifiable claims)
+- Differentiators (what's genuinely true, not marketing speak)
+- Testimonials and reviews (verbatim)
+- Origin story / about content
+- Google Business Profile data
+- Raw content archive (paste-in zone for existing copy)
+
+### How to create one for a new client
+
+1. Open `BUSINESS-INTAKE.md` (in the repo root)
+2. Copy the prompt and paste it into a new Claude conversation
+3. Either paste raw content (website copy, GBP listing, reviews, a write-up) or let Claude interview you
+4. Claude outputs a complete `BUSINESS.md`
+5. Save it to the client's project folder
+6. Tell Claude Code: *"Read BUSINESS.md and begin building the site"*
+
+### Rule: never invent copy
+
+If a fact, quote, metric, or claim isn't in `BUSINESS.md`, ask before using it. Do not fabricate proof points, testimonials, or business history. The site must be factually accurate.
+
+---
+
 ## Starting a New Client Site
 
 ### Step 1 — Create the project directory
