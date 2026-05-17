@@ -1,5 +1,7 @@
 import { chromium, Page } from 'playwright';
 import * as cheerio from 'cheerio';
+import fs from 'fs';
+import * as path from 'path';
 
 export interface SubScores {
   seo: number;
@@ -48,6 +50,7 @@ export interface AuditResult {
   revenueLeaks: RevenueLeak[];
   checklist: ChecklistItem[];
   actionPlan: ActionPlan;
+  images?: string[];
   warnings?: string[];
 }
 
@@ -101,6 +104,9 @@ export async function runAudit(url: string): Promise<AuditResult> {
     const checklist = generateChecklist(revenueLeaks);
     const actionPlan = generateActionPlan(checklist);
     
+    // Save images for mockups
+    const savedImages = await saveClientImages(url, homepageData.images);
+    
     return {
       url,
       overallGrade,
@@ -114,6 +120,7 @@ export async function runAudit(url: string): Promise<AuditResult> {
       revenueLeaks,
       checklist,
       actionPlan,
+      images: savedImages,
       warnings: warnings.length > 0 ? warnings : undefined,
     };
   } finally {
@@ -121,7 +128,7 @@ export async function runAudit(url: string): Promise<AuditResult> {
   }
 }
 
-async function fetchPageWithRetry(context: any, url: string, retries: number): Promise<{ html: string; loadTime: number; warning?: string }> {
+async function fetchPageWithRetry(context: any, url: string, retries: number): Promise<{ html: string; loadTime: number; images: string[]; warning?: string }> {
   let lastError: any;
   for (let i = 0; i <= retries; i++) {
     const page = await context.newPage();
@@ -134,11 +141,19 @@ async function fetchPageWithRetry(context: any, url: string, retries: number): P
       if (!response.ok()) throw new Error(`HTTP ${response.status()}`);
 
       const content = await page.content();
+      
+      // Extract images while page is open
+      const images = await page.evaluate(() => {
+        return Array.from(document.images)
+          .map(img => img.src)
+          .filter(src => src.startsWith('http') && !src.includes('data:image'));
+      });
+
       if (content.length > MAX_PAGE_SIZE) {
-        return { html: content.substring(0, MAX_PAGE_SIZE), loadTime, warning: 'Page too large, analyzed partial content.' };
+        return { html: content.substring(0, MAX_PAGE_SIZE), loadTime, images, warning: 'Page too large, analyzed partial content.' };
       }
 
-      return { html: content, loadTime };
+      return { html: content, loadTime, images };
     } catch (err: any) {
       lastError = err;
       if (i < retries) {
@@ -150,7 +165,7 @@ async function fetchPageWithRetry(context: any, url: string, retries: number): P
   }
 
   // Graceful degradation: return empty but with warning
-  return { html: '', loadTime: 0, warning: `Failed to reach page after ${retries + 1} attempts: ${lastError.message}` };
+  return { html: '', loadTime: 0, images: [], warning: `Failed to reach page after ${retries + 1} attempts: ${lastError.message}` };
 }
 
 function findContactPageUrl($: cheerio.CheerioAPI, baseUrl: string): string | null {
@@ -353,4 +368,27 @@ function generateActionPlan(checklist: ChecklistItem[]): ActionPlan {
       { task: 'Lead Magnet Creation', time: '2 hours', difficulty: 2 }
     ]
   };
+}
+
+async function saveClientImages(url: string, images: string[]): Promise<string[]> {
+  try {
+    const urlObj = new URL(url);
+    const domain = urlObj.hostname;
+    const clientName = domain.replace(/^www\./, '').split('.')[0];
+    const dir = `/home/team/shared/sales/client-assets/${clientName}`;
+    
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+
+    // Save the metadata JSON
+    fs.writeFileSync(path.join(dir, 'images.json'), JSON.stringify(images, null, 2));
+
+    // For now, we return the URLs. Actual background downloading can be added if needed.
+    // In this sandbox environment, the frontend can use these URLs directly.
+    return images;
+  } catch (e) {
+    console.error('Failed to save client images:', e);
+    return images;
+  }
 }
