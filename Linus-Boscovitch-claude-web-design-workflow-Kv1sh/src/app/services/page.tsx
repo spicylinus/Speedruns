@@ -56,7 +56,7 @@ export default function ServicesPage() {
       <section className="snap-section bg-void flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">Services</p>
+            <p className="eyebrow text-ember mb-6">Services</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h1

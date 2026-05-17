@@ -12,7 +12,7 @@ export default function BookACallPage() {
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-24">
         <div className="max-w-2xl w-full text-center mb-12">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">Schedule</p>
+            <p className="eyebrow text-ember mb-6">Schedule</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h1
@@ -45,7 +45,7 @@ export default function BookACallPage() {
               >
                 Scheduling Calendar
               </p>
-              <p className="text-white/50 text-sm max-w-md" style={{ lineHeight: '1.6' }}>
+              <p className="text-white/55 text-sm max-w-md" style={{ lineHeight: '1.6' }}>
                 The Calendly scheduling widget will be embedded here. To configure: replace this placeholder with your Calendly inline embed script or use a Next.js-compatible Calendly component.
               </p>
             </div>
@@ -59,7 +59,7 @@ export default function BookACallPage() {
         </AnimateIn>
 
         <AnimateIn delay={0.4} className="mt-12 text-center">
-          <p className="text-white/30 text-sm">
+          <p className="text-white/55 text-sm">
             Prefer email?{' '}
             <a href="mailto:hello@sociallinus.com" className="text-white/50 hover:text-white transition-colors underline">
               hello@sociallinus.com

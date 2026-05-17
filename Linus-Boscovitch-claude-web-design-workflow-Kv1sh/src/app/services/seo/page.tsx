@@ -15,7 +15,7 @@ export default function SeoPage() {
       <section className="snap-section bg-void flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">SEO</p>
+            <p className="eyebrow text-ember mb-6">SEO</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h1
@@ -26,7 +26,7 @@ export default function SeoPage() {
             </h1>
           </AnimateIn>
           <AnimateIn delay={0.2}>
-            <p className="text-white/70 max-w-2xl mb-10" style={{ fontSize: '18px', lineHeight: '1.6' }}>
+            <p className="text-white/75 max-w-2xl mb-10" style={{ fontSize: '18px', lineHeight: '1.6' }}>
               Ranking for your business name isn&apos;t SEO. We get you in front of buyers actively searching for what you sell.
             </p>
           </AnimateIn>
@@ -40,7 +40,7 @@ export default function SeoPage() {
       <section className="snap-section bg-white flex flex-col justify-center px-6 py-24">
         <div className="max-w-3xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">The Problem</p>
+            <p className="eyebrow text-ember mb-6">The Problem</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h2
@@ -65,7 +65,7 @@ export default function SeoPage() {
       <section className="snap-section bg-frost flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">Our Approach</p>
+            <p className="eyebrow text-ember mb-6">Our Approach</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h2
@@ -104,7 +104,7 @@ export default function SeoPage() {
       <section className="snap-section bg-white flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">Who It&apos;s For</p>
+            <p className="eyebrow text-ember mb-6">Who It&apos;s For</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h2
@@ -137,7 +137,7 @@ export default function SeoPage() {
       <section className="snap-section--short bg-void px-6 py-20">
         <div className="max-w-3xl mx-auto">
           <AnimateIn>
-            <div className="border border-ember/40 rounded-2xl p-10 text-center">
+            <div className="border border-white/10 rounded-2xl p-10 text-center">
               <p className="eyebrow text-ember mb-4">SEO Diagnostic</p>
               <h2
                 className="font-display font-semibold text-white mb-4"
@@ -145,10 +145,10 @@ export default function SeoPage() {
               >
                 $197 SEO Diagnostic. Find 5 revenue-impacting issues — or you don&apos;t pay.
               </h2>
-              <p className="text-white/70 mb-8" style={{ fontSize: '16px', lineHeight: '1.6' }}>
+              <p className="text-white/75 mb-8" style={{ fontSize: '16px', lineHeight: '1.6' }}>
                 We audit your site, your competitors, and your keyword landscape. You get a written report with specific, ranked fixes. If we don&apos;t find at least 5 issues directly impacting your revenue, the diagnostic is free.
               </p>
-              <Button href="/book-a-call" variant="ember" size="lg">Book Your SEO Diagnostic →</Button>
+              <Button href="/book-a-call" size="lg">Book Your SEO Diagnostic →</Button>
             </div>
           </AnimateIn>
         </div>
@@ -158,7 +158,7 @@ export default function SeoPage() {
       <section className="snap-section--short bg-frost px-6 py-16">
         <div className="max-w-5xl mx-auto">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-4">Results</p>
+            <p className="eyebrow text-ember mb-4">Results</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <Link

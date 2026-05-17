@@ -15,7 +15,7 @@ export default function CreativeSourcesCaseStudyPage() {
       <section className="snap-section bg-void flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">Case Study · Commercial Lighting · Atlanta</p>
+            <p className="eyebrow text-ember mb-6">Case Study · Commercial Lighting · Atlanta</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h1
@@ -45,7 +45,7 @@ export default function CreativeSourcesCaseStudyPage() {
       <section className="snap-section bg-white flex flex-col justify-center px-6 py-24">
         <div className="max-w-3xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">The Challenge</p>
+            <p className="eyebrow text-ember mb-6">The Challenge</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h2
@@ -70,7 +70,7 @@ export default function CreativeSourcesCaseStudyPage() {
       <section className="snap-section bg-frost flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">What We Did</p>
+            <p className="eyebrow text-ember mb-6">What We Did</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h2
@@ -105,7 +105,7 @@ export default function CreativeSourcesCaseStudyPage() {
       <section className="snap-section bg-void flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">Results</p>
+            <p className="eyebrow text-ember mb-6">Results</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h2
@@ -129,7 +129,7 @@ export default function CreativeSourcesCaseStudyPage() {
                   >
                     {stat.metric}
                   </div>
-                  <p className="eyebrow text-white/50">{stat.label}</p>
+                  <p className="eyebrow text-white/55">{stat.label}</p>
                 </div>
               </AnimateIn>
             ))}
@@ -141,7 +141,7 @@ export default function CreativeSourcesCaseStudyPage() {
                 &ldquo;We&apos;ve been in business for over a decade and never ranked for anything. Now we&apos;re getting calls from companies we&apos;ve never met who found us on Google. That didn&apos;t happen before.&rdquo;
               </p>
               <p className="font-display font-semibold text-white text-sm">Creative Sources</p>
-              <p className="text-white/50 text-sm">Commercial Lighting, Atlanta GA</p>
+              <p className="text-white/55 text-sm">Commercial Lighting, Atlanta GA</p>
             </div>
           </AnimateIn>
         </div>

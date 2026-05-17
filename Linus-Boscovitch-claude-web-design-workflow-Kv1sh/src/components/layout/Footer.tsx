@@ -50,15 +50,15 @@ export function Footer() {
                   Book a Call →
                 </Link>
               </li>
-              <li className="text-sm text-white/40">Atlanta, GA</li>
+              <li className="text-sm text-white/55">Atlanta, GA</li>
             </ul>
           </div>
         </div>
 
         <div className="mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-white/40">© 2026 Social Linus Web Services. All rights reserved.</p>
-          <Link href="/" className="font-display font-semibold text-white text-sm">
-            Social Linus
+          <p className="text-sm text-white/55">© 2026 Social Linus Web Services. All rights reserved.</p>
+          <Link href="/" className="font-display font-semibold text-white text-sm" style={{ letterSpacing: '-0.02em' }}>
+            Social<span style={{ color: 'var(--color-cobalt)' }}>Linus</span>
           </Link>
         </div>
       </div>

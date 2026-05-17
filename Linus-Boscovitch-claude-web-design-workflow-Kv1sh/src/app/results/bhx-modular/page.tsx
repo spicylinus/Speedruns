@@ -14,7 +14,7 @@ export default function BhxModularPage() {
       <section className="snap-section bg-void flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">Case Study · Modular Construction</p>
+            <p className="eyebrow text-ember mb-6">Case Study · Modular Construction</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h1
@@ -26,7 +26,7 @@ export default function BhxModularPage() {
           </AnimateIn>
           <AnimateIn delay={0.2}>
             <div
-              className="font-mono font-bold text-white/40 mb-8"
+              className="font-mono font-bold text-white/55 mb-8"
               style={{ fontSize: '42px', letterSpacing: '-0.02em' }}
             >
               In Progress
@@ -44,7 +44,7 @@ export default function BhxModularPage() {
       <section className="snap-section bg-white flex flex-col justify-center px-6 py-24">
         <div className="max-w-3xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">The Engagement</p>
+            <p className="eyebrow text-ember mb-6">The Engagement</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h2

@@ -14,7 +14,7 @@ export default function AboutPage() {
       <section className="snap-section bg-void flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">About</p>
+            <p className="eyebrow text-ember mb-6">About</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h1
@@ -38,7 +38,7 @@ export default function AboutPage() {
                   >
                     {item.stat}
                   </div>
-                  <p className="eyebrow text-white/40 mt-1">{item.label}</p>
+                  <p className="eyebrow text-white/55 mt-1">{item.label}</p>
                 </div>
               ))}
             </div>
@@ -50,7 +50,7 @@ export default function AboutPage() {
       <section className="snap-section bg-white flex flex-col justify-center px-6 py-24">
         <div className="max-w-3xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">The Story</p>
+            <p className="eyebrow text-ember mb-6">The Story</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h2
@@ -83,7 +83,7 @@ export default function AboutPage() {
       <section className="snap-section bg-frost flex flex-col justify-center px-6 py-24">
         <div className="max-w-3xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">Philosophy</p>
+            <p className="eyebrow text-ember mb-6">Philosophy</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <blockquote
@@ -118,7 +118,7 @@ export default function AboutPage() {
               </div>
               <div>
                 <p className="font-display font-bold text-void text-2xl mb-1">Shannendoah</p>
-                <p className="eyebrow text-cobalt mb-4">Founder, Social Linus</p>
+                <p className="eyebrow text-ember mb-4">Founder, Social Linus</p>
                 <p className="text-slate" style={{ fontSize: '16px', lineHeight: '1.65' }}>
                   15+ years in web design. 8+ years running SEO campaigns. Based in Atlanta, working with B2B service companies across the Southeast.
                 </p>

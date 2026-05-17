@@ -63,7 +63,7 @@ export default function LeadGenerationPage() {
       <section className="snap-section bg-void flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">Lead Generation</p>
+            <p className="eyebrow text-ember mb-6">Lead Generation</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h1
@@ -88,7 +88,7 @@ export default function LeadGenerationPage() {
       <section className="snap-section bg-white flex flex-col justify-center px-6 py-24">
         <div className="max-w-3xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">The Problem</p>
+            <p className="eyebrow text-ember mb-6">The Problem</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h2
@@ -113,7 +113,7 @@ export default function LeadGenerationPage() {
       <section className="snap-section bg-frost flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">Our Approach</p>
+            <p className="eyebrow text-ember mb-6">Our Approach</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h2
@@ -155,7 +155,7 @@ export default function LeadGenerationPage() {
       <section className="snap-section bg-white flex flex-col justify-center px-6 py-24">
         <div className="max-w-3xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">Who It&apos;s For</p>
+            <p className="eyebrow text-ember mb-6">Who It&apos;s For</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h2
@@ -180,7 +180,7 @@ export default function LeadGenerationPage() {
       <section className="snap-section bg-void flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">Pricing</p>
+            <p className="eyebrow text-ember mb-6">Pricing</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h2
@@ -211,7 +211,7 @@ export default function LeadGenerationPage() {
                       >
                         {tier.price}
                       </span>
-                      <span className={`text-sm mb-2 ${tier.highlight ? 'text-white/70' : 'text-white/50'}`}>
+                      <span className={`text-sm mb-2 ${tier.highlight ? 'text-white/70' : `text-white/55`}`}>
                         {tier.period}
                       </span>
                     </div>

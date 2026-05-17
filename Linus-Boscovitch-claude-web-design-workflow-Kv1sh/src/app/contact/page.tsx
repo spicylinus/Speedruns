@@ -16,7 +16,7 @@ export default function ContactPage() {
       <section className="snap-section bg-void flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">Contact</p>
+            <p className="eyebrow text-ember mb-6">Contact</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h1
@@ -73,7 +73,7 @@ export default function ContactPage() {
             {/* Right — Book a Call */}
             <AnimateIn delay={0.2}>
               <div className="bg-void rounded-2xl p-10 h-full flex flex-col justify-center text-center">
-                <p className="eyebrow text-cobalt mb-6">Fastest Path Forward</p>
+                <p className="eyebrow text-ember mb-6">Fastest Path Forward</p>
                 <h2
                   className="font-display font-semibold text-white mb-4"
                   style={{ fontSize: '28px', letterSpacing: '-0.02em' }}
@@ -89,7 +89,7 @@ export default function ContactPage() {
                 >
                   Book a Call →
                 </Link>
-                <p className="text-white/30 text-sm mt-4">No commitment. 15 minutes.</p>
+                <p className="text-white/55 text-sm mt-4">No commitment. 15 minutes.</p>
               </div>
             </AnimateIn>
           </div>

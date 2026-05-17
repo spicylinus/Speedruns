@@ -51,7 +51,7 @@ export default function HomePage() {
       {/* Section 1 — Hero */}
       <section className="snap-section bg-void flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
-          <p className="hero-animate eyebrow text-cobalt mb-6" style={{ opacity: 0 }}>
+          <p className="hero-animate eyebrow mb-6" style={{ opacity: 0, color: 'rgba(255,255,255,0.55)' }}>
             Web Design · SEO · Lead Generation — Atlanta &amp; The Southeast
           </p>
           <h1
@@ -63,8 +63,8 @@ export default function HomePage() {
             You should be too.
           </h1>
           <p
-            className="hero-animate text-white/70 mb-10 max-w-2xl"
-            style={{ fontSize: '18px', lineHeight: '1.6', opacity: 0 }}
+            className="hero-animate mb-10 max-w-2xl"
+            style={{ fontSize: '18px', lineHeight: '1.6', opacity: 0, color: 'rgba(255,255,255,0.75)' }}
           >
             We build websites that generate leads, run SEO that drives revenue, and deliver qualified prospects to B2B service companies where every deal matters.
           </p>
@@ -94,7 +94,7 @@ export default function HomePage() {
                     displayText={stat.displayText}
                   />
                 </div>
-                <p className="eyebrow text-white/50">{stat.label}</p>
+                <p className="eyebrow text-white/55">{stat.label}</p>
               </AnimateIn>
             ))}
           </div>
@@ -105,7 +105,7 @@ export default function HomePage() {
       <section className="snap-section bg-white flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-4">What We Do</p>
+            <p className="eyebrow text-ember mb-4">What We Do</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h2
@@ -150,7 +150,7 @@ export default function HomePage() {
       <section className="snap-section bg-void flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-4">Results</p>
+            <p className="eyebrow text-ember mb-4">Results</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h2
@@ -166,14 +166,14 @@ export default function HomePage() {
                 href="/results/creative-sources"
                 className="block bg-white/5 border border-white/10 rounded-xl p-8 hover:bg-white/10 transition-colors group"
               >
-                <p className="eyebrow text-white/40 mb-4">Commercial Lighting · Atlanta</p>
+                <p className="eyebrow text-white/55 mb-4">Commercial Lighting · Atlanta</p>
                 <div
                   className="font-mono font-bold text-cobalt mb-3"
                   style={{ fontSize: '42px', letterSpacing: '-0.02em' }}
                 >
                   Page 20 → Page 1
                 </div>
-                <p className="text-white/70 text-sm leading-relaxed">
+                <p className="text-white/75 text-sm leading-relaxed">
                   Complete website redesign + SEO overhaul. Page one for every target keyword.
                 </p>
                 <p className="text-cobalt text-sm font-medium mt-4 group-hover:underline">Read case study →</p>
@@ -184,14 +184,14 @@ export default function HomePage() {
                 href="/results/ecommerce-beauty-brand"
                 className="block bg-white/5 border border-white/10 rounded-xl p-8 hover:bg-white/10 transition-colors group"
               >
-                <p className="eyebrow text-white/40 mb-4">Beauty &amp; Personal Care · E-commerce</p>
+                <p className="eyebrow text-white/55 mb-4">Beauty &amp; Personal Care · E-commerce</p>
                 <div
                   className="font-mono font-bold text-cobalt mb-3"
                   style={{ fontSize: '42px', letterSpacing: '-0.02em' }}
                 >
                   +37%
                 </div>
-                <p className="text-white/70 text-sm leading-relaxed">
+                <p className="text-white/75 text-sm leading-relaxed">
                   Average order value increase in 30 days after site redesign.
                 </p>
                 <p className="text-cobalt text-sm font-medium mt-4 group-hover:underline">Read case study →</p>
@@ -247,7 +247,7 @@ export default function HomePage() {
             </h2>
           </AnimateIn>
           <AnimateIn delay={0.1}>
-            <p className="text-white/70 mb-10" style={{ fontSize: '18px', lineHeight: '1.6' }}>
+            <p className="text-white/75 mb-10" style={{ fontSize: '18px', lineHeight: '1.6' }}>
               Book a 15-minute call. We&apos;ll review your current site, your goals, and whether we&apos;re the right fit.
             </p>
           </AnimateIn>

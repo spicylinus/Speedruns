@@ -14,7 +14,7 @@ export default function EcommerceBeautyBrandPage() {
       <section className="snap-section bg-void flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">Case Study · Beauty &amp; Personal Care · E-commerce</p>
+            <p className="eyebrow text-ember mb-6">Case Study · Beauty &amp; Personal Care · E-commerce</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h1
@@ -22,7 +22,7 @@ export default function EcommerceBeautyBrandPage() {
               style={{ fontSize: '48px', letterSpacing: '-0.03em' }}
             >
               E-commerce Beauty Brand
-              <span className="block text-white/40 mt-2" style={{ fontSize: '24px' }}>Anonymized by request</span>
+              <span className="block text-white/55 mt-2" style={{ fontSize: '24px' }}>Anonymized by request</span>
             </h1>
           </AnimateIn>
           <AnimateIn delay={0.2}>
@@ -45,7 +45,7 @@ export default function EcommerceBeautyBrandPage() {
       <section className="snap-section bg-white flex flex-col justify-center px-6 py-24">
         <div className="max-w-3xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">The Challenge</p>
+            <p className="eyebrow text-ember mb-6">The Challenge</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h2
@@ -70,7 +70,7 @@ export default function EcommerceBeautyBrandPage() {
       <section className="snap-section bg-frost flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">What We Did</p>
+            <p className="eyebrow text-ember mb-6">What We Did</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h2
@@ -105,7 +105,7 @@ export default function EcommerceBeautyBrandPage() {
       <section className="snap-section bg-void flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">Results</p>
+            <p className="eyebrow text-ember mb-6">Results</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h2
@@ -129,7 +129,7 @@ export default function EcommerceBeautyBrandPage() {
                   >
                     {stat.metric}
                   </div>
-                  <p className="eyebrow text-white/50">{stat.label}</p>
+                  <p className="eyebrow text-white/55">{stat.label}</p>
                 </div>
               </AnimateIn>
             ))}

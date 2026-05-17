@@ -23,7 +23,7 @@ export default function WebDesignPage() {
       <section className="snap-section bg-void flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">Web Design</p>
+            <p className="eyebrow text-ember mb-6">Web Design</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h1
@@ -48,7 +48,7 @@ export default function WebDesignPage() {
       <section className="snap-section bg-white flex flex-col justify-center px-6 py-24">
         <div className="max-w-3xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">The Problem</p>
+            <p className="eyebrow text-ember mb-6">The Problem</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h2
@@ -73,7 +73,7 @@ export default function WebDesignPage() {
       <section className="snap-section bg-frost flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">Our Approach</p>
+            <p className="eyebrow text-ember mb-6">Our Approach</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h2
@@ -110,7 +110,7 @@ export default function WebDesignPage() {
       <section className="snap-section bg-white flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">Who It&apos;s For</p>
+            <p className="eyebrow text-ember mb-6">Who It&apos;s For</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h2
@@ -146,7 +146,7 @@ export default function WebDesignPage() {
       <section className="snap-section bg-void flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-6">The Process</p>
+            <p className="eyebrow text-ember mb-6">The Process</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <h2
@@ -164,7 +164,7 @@ export default function WebDesignPage() {
                   <h3 className="font-display font-medium text-white mb-2" style={{ fontSize: '16px' }}>
                     {step.title}
                   </h3>
-                  <p className="text-white/50" style={{ fontSize: '13px', lineHeight: '1.6' }}>{step.body}</p>
+                  <p className="text-white/55" style={{ fontSize: '13px', lineHeight: '1.6' }}>{step.body}</p>
                 </div>
               </AnimateIn>
             ))}
@@ -176,7 +176,7 @@ export default function WebDesignPage() {
       <section className="snap-section--short bg-white px-6 py-16">
         <div className="max-w-5xl mx-auto">
           <AnimateIn>
-            <p className="eyebrow text-cobalt mb-4">Results</p>
+            <p className="eyebrow text-ember mb-4">Results</p>
           </AnimateIn>
           <AnimateIn delay={0.1}>
             <Link

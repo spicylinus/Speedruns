@@ -25,10 +25,13 @@ export function Header() {
   const [servicesOpen, setServicesOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-50 bg-void border-b border-white/10">
+    <header
+      className="sticky top-0 z-50 border-b border-white/10 backdrop-blur-md"
+      style={{ background: 'rgba(13, 15, 18, 0.94)' }}
+    >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
-        <Link href="/" className="font-display font-700 text-xl text-white tracking-tight">
-          Social Linus
+        <Link href="/" className="font-display font-bold text-xl text-white" style={{ letterSpacing: '-0.02em' }}>
+          Social<span style={{ color: 'var(--color-cobalt)' }}>Linus</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
