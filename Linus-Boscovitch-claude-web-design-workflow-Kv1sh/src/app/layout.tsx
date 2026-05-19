@@ -18,7 +18,7 @@ const GHL_CHAT_WIDGET_LOCATION_ID = 'YOUR_GHL_LOCATION_ID'  // same location ID
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-display',
+  variable: '--font-space-grotesk',
   display: 'swap',
 })
 
@@ -26,7 +26,7 @@ const dmSans = DM_Sans({
   subsets: ['latin'],
   weight: ['300', '400', '500', '700'],
   style: ['normal', 'italic'],
-  variable: '--font-sans',
+  variable: '--font-dm-sans',
   display: 'swap',
 })
 
@@ -34,7 +34,7 @@ const spaceMono = Space_Mono({
   subsets: ['latin'],
   weight: ['400', '700'],
   style: ['normal', 'italic'],
-  variable: '--font-mono',
+  variable: '--font-space-mono',
   display: 'swap',
 })
 
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-style="minimalism" suppressHydrationWarning
+    <html lang="en" suppressHydrationWarning
       className={`${spaceGrotesk.variable} ${dmSans.variable} ${spaceMono.variable}`}>
       <body className="antialiased">
         <Header />

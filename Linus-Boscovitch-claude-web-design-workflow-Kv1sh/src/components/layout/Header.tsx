@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { Menu, X, ChevronDown } from 'lucide-react'
 
 const servicesLinks = [
@@ -23,25 +23,12 @@ export function Header() {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
-  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  function openDropdown() {
-    if (closeTimer.current) clearTimeout(closeTimer.current)
-    setServicesOpen(true)
-  }
-
-  function closeDropdown() {
-    closeTimer.current = setTimeout(() => setServicesOpen(false), 120)
-  }
 
   return (
-    <header
-      className="sticky top-0 z-50 border-b border-white/10 backdrop-blur-md"
-      style={{ background: 'rgba(13, 15, 18, 0.94)' }}
-    >
+    <header className="sticky top-0 z-50 bg-void border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
-        <Link href="/" className="font-display font-bold text-xl text-white" style={{ letterSpacing: '-0.02em' }}>
-          Social<span style={{ color: 'var(--color-cobalt)' }}>Linus</span>
+        <Link href="/" className="font-heading font-700 text-xl text-white tracking-tight">
+          Social Linus
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
@@ -52,8 +39,8 @@ export function Header() {
                 <div
                   key={link.href}
                   className="relative"
-                  onMouseEnter={openDropdown}
-                  onMouseLeave={closeDropdown}
+                  onMouseEnter={() => setServicesOpen(true)}
+                  onMouseLeave={() => setServicesOpen(false)}
                 >
                   <button
                     className={`flex items-center gap-1 text-sm font-medium transition-colors ${
@@ -64,22 +51,16 @@ export function Header() {
                     <ChevronDown size={14} className={`transition-transform ${servicesOpen ? 'rotate-180' : ''}`} />
                   </button>
                   {servicesOpen && (
-                    <div
-                      className="absolute top-full left-0 pt-1 w-48"
-                      onMouseEnter={openDropdown}
-                      onMouseLeave={closeDropdown}
-                    >
-                      <div className="bg-void border border-white/10 rounded-lg shadow-lg overflow-hidden">
-                        {link.dropdown.map((sub) => (
-                          <Link
-                            key={sub.href}
-                            href={sub.href}
-                            className="block px-4 py-3 text-sm text-white/75 hover:text-cobalt hover:bg-cobalt/8 transition-colors"
-                          >
-                            {sub.label}
-                          </Link>
-                        ))}
-                      </div>
+                    <div className="absolute top-full left-0 mt-2 w-48 bg-void border border-white/10 rounded-lg shadow-lg overflow-hidden">
+                      {link.dropdown.map((sub) => (
+                        <Link
+                          key={sub.href}
+                          href={sub.href}
+                          className="block px-4 py-3 text-sm text-white/80 hover:text-white hover:bg-white/5 transition-colors"
+                        >
+                          {sub.label}
+                        </Link>
+                      ))}
                     </div>
                   )}
                 </div>

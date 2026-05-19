@@ -6,7 +6,7 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           <div>
-            <h3 className="font-display font-semibold text-white text-sm uppercase tracking-wider mb-4">Services</h3>
+            <h3 className="font-heading font-semibold text-white text-sm uppercase tracking-wider mb-4">Services</h3>
             <ul className="space-y-3">
               <li><Link href="/services/web-design" className="text-sm hover:text-white transition-colors">Web Design</Link></li>
               <li><Link href="/services/seo" className="text-sm hover:text-white transition-colors">SEO</Link></li>
@@ -15,7 +15,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-display font-semibold text-white text-sm uppercase tracking-wider mb-4">Company</h3>
+            <h3 className="font-heading font-semibold text-white text-sm uppercase tracking-wider mb-4">Company</h3>
             <ul className="space-y-3">
               <li><Link href="/about" className="text-sm hover:text-white transition-colors">About</Link></li>
               <li><Link href="/results" className="text-sm hover:text-white transition-colors">Results</Link></li>
@@ -25,7 +25,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-display font-semibold text-white text-sm uppercase tracking-wider mb-4">Legal</h3>
+            <h3 className="font-heading font-semibold text-white text-sm uppercase tracking-wider mb-4">Legal</h3>
             <ul className="space-y-3">
               <li><Link href="/privacy-policy" className="text-sm hover:text-white transition-colors">Privacy Policy</Link></li>
               <li><Link href="/terms" className="text-sm hover:text-white transition-colors">Terms &amp; Conditions</Link></li>
@@ -33,7 +33,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-display font-semibold text-white text-sm uppercase tracking-wider mb-4">Contact</h3>
+            <h3 className="font-heading font-semibold text-white text-sm uppercase tracking-wider mb-4">Contact</h3>
             <ul className="space-y-3">
               <li>
                 <a href="mailto:hello@sociallinus.com" className="text-sm hover:text-white transition-colors">
@@ -50,15 +50,15 @@ export function Footer() {
                   Book a Call →
                 </Link>
               </li>
-              <li className="text-sm text-white/55">Atlanta, GA</li>
+              <li className="text-sm text-white/40">Atlanta, GA</li>
             </ul>
           </div>
         </div>
 
         <div className="mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-white/55">© 2026 Social Linus Web Services. All rights reserved.</p>
-          <Link href="/" className="font-display font-semibold text-white text-sm" style={{ letterSpacing: '-0.02em' }}>
-            Social<span style={{ color: 'var(--color-cobalt)' }}>Linus</span>
+          <p className="text-sm text-white/40">© 2026 Social Linus Web Services. All rights reserved.</p>
+          <Link href="/" className="font-heading font-semibold text-white text-sm">
+            Social Linus
           </Link>
         </div>
       </div>

@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "../styles/design-styles.css";
 
 @theme {
   /* Social Linus Brand Colors */
@@ -8,26 +7,17 @@
   --color-cobalt-hover: #0f3bc2;
   --color-ember: #FF4D1C;
   --color-ember-hover: #e0421a;
-  --color-white: #FFFFFF;
   --color-frost: #EBF2FF;
   --color-slate: #4A5568;
 
-  /* Legacy mappings for existing components */
-  --color-primary: #1547E8;
-  --color-primary-foreground: #ffffff;
-  --color-secondary: #4A5568;
-  --color-accent: #FF4D1C;
-  --color-background: #ffffff;
-  --color-surface: #EBF2FF;
-  --color-surface-muted: #f1f5f9;
-  --color-border: #e2e8f0;
-  --color-text: #0D0F12;
-  --color-text-muted: #4A5568;
+  /* Override Tailwind defaults to match brand */
+  --color-white: #FFFFFF;
+  --color-black: #0D0F12;
 
   /* Typography */
-  --font-sans: 'DM Sans', system-ui, sans-serif;
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
-  --font-mono: 'Space Mono', monospace;
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-mono: var(--font-space-mono), monospace;
 
   /* Radii */
   --radius-sm: 0.25rem;
@@ -89,29 +79,10 @@
     }
   }
 
-  .font-display {
+  /* Heading font utility — named to avoid conflict with font-display CSS descriptor */
+  .font-heading {
     font-family: var(--font-display);
   }
-
-  .font-mono {
-    font-family: var(--font-mono);
-  }
-
-  .text-void { color: var(--color-void); }
-  .text-cobalt { color: var(--color-cobalt); }
-  .text-ember { color: var(--color-ember); }
-  .text-slate { color: var(--color-slate); }
-  .text-frost { color: var(--color-frost); }
-
-  .bg-void { background-color: var(--color-void); }
-  .bg-cobalt { background-color: var(--color-cobalt); }
-  .bg-ember { background-color: var(--color-ember); }
-  .bg-frost { background-color: var(--color-frost); }
-
-  .border-cobalt { border-color: var(--color-cobalt); }
-  .border-ember { border-color: var(--color-ember); }
-  .border-slate { border-color: var(--color-slate); }
-  .border-frost { border-color: var(--color-frost); }
 
   .eyebrow {
     font-family: var(--font-mono);
