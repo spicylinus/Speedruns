@@ -44,7 +44,7 @@ export default function HomePage() {
   return (
     <main>
       {/* Section 1 — Hero */}
-      <section className="snap-section flex flex-col justify-center px-6 py-24" style={{ backgroundColor: '#0D0F12' }}>
+      <section className="snap-section bg-void flex flex-col justify-center px-6 py-24">
         <HeroAnimated />
       </section>
 
