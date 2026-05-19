@@ -4,7 +4,6 @@ import { motion } from 'motion/react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { AnimateIn } from '@/components/motion/AnimateIn'
-import { HeroAnimations } from '@/components/motion/HeroAnimations'
 import { StatCounter } from '@/components/motion/StatCounter'
 
 const services = [
@@ -46,32 +45,46 @@ const testimonials = [
 export default function HomePage() {
   return (
     <main>
-      <HeroAnimations />
-
       {/* Section 1 — Hero */}
       <section className="snap-section bg-void flex flex-col justify-center px-6 py-24">
         <div className="max-w-5xl mx-auto w-full">
-          <p className="hero-animate eyebrow text-cobalt mb-6" style={{ opacity: 0 }}>
+          <motion.p
+            className="eyebrow text-cobalt mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+          >
             Web Design · SEO · Lead Generation — Atlanta &amp; The Southeast
-          </p>
-          <h1
-            className="hero-animate font-heading font-bold text-white mb-6 leading-none"
-            style={{ fontSize: '72px', letterSpacing: '-0.04em', opacity: 0 }}
+          </motion.p>
+          <motion.h1
+            className="font-heading font-bold text-white mb-6 leading-none"
+            style={{ fontSize: '72px', letterSpacing: '-0.04em' }}
+            initial={{ opacity: 0, y: 24, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.1, ease: 'easeOut' }}
           >
             Your competitors are ranking.
             <br />
             You should be too.
-          </h1>
-          <p
-            className="hero-animate text-white/70 mb-10 max-w-2xl"
-            style={{ fontSize: '18px', lineHeight: '1.6', opacity: 0 }}
+          </motion.h1>
+          <motion.p
+            className="text-white/70 mb-10 max-w-2xl"
+            style={{ fontSize: '18px', lineHeight: '1.6' }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.25, ease: 'easeOut' }}
           >
             We build websites that generate leads, run SEO that drives revenue, and deliver qualified prospects to B2B service companies where every deal matters.
-          </p>
-          <div className="hero-animate flex flex-wrap gap-4" style={{ opacity: 0 }}>
+          </motion.p>
+          <motion.div
+            className="flex flex-wrap gap-4"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4, ease: 'easeOut' }}
+          >
             <Button href="/book-a-call" size="lg">Book a Call →</Button>
             <Button href="/results" variant="ghost" size="lg">See Our Results</Button>
-          </div>
+          </motion.div>
         </div>
       </section>
 
