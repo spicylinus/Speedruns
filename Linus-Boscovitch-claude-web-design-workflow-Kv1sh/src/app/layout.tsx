@@ -50,7 +50,6 @@ export const metadata: Metadata = {
     template: '%s | Social Linus',
   },
   description: 'Social Linus is an Atlanta-based web design, SEO, and lead generation agency for B2B service companies. 15+ years experience. Real results.',
-  metadataBase: new URL('https://sociallinus.com'),
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
