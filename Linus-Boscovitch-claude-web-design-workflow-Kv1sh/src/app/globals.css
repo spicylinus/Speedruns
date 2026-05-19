@@ -1,5 +1,26 @@
 @import "tailwindcss";
 
+/*
+  Unlayered brand utilities — declared outside @layer so they win over
+  ALL Tailwind @layer declarations (theme, base, utilities). This prevents
+  any CSS variable resolution issues from making dark sections appear white.
+*/
+.bg-void   { background-color: #0D0F12; }
+.bg-cobalt { background-color: #1547E8; }
+.bg-ember  { background-color: #FF4D1C; }
+.bg-frost  { background-color: #EBF2FF; }
+
+.text-void   { color: #0D0F12; }
+.text-cobalt { color: #1547E8; }
+.text-ember  { color: #FF4D1C; }
+.text-frost  { color: #EBF2FF; }
+.text-slate  { color: #4A5568; }
+
+.border-cobalt { border-color: #1547E8; }
+.border-ember  { border-color: #FF4D1C; }
+.border-slate  { border-color: #4A5568; }
+.border-frost  { border-color: #EBF2FF; }
+
 @theme {
   /* Social Linus Brand Colors */
   --color-void: #0D0F12;
