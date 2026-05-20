@@ -20,6 +20,9 @@
 .bg-ember  { background-color: #FF4D1C; }
 .bg-frost  { background-color: #EBF2FF; }
 
+/* Structural fallback — immune to React hydration and layer cascade */
+main > section:first-of-type { background-color: #0D0F12 !important; }
+
 .text-void   { color: #0D0F12; }
 .text-cobalt { color: #1547E8; }
 .text-ember  { color: #FF4D1C; }
