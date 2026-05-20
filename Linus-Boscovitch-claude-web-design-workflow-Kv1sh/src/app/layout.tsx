@@ -61,42 +61,46 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         <Footer />
 
-        {/* GHL Site Tracking — loads after page is interactive */}
-        <Script
-          id="ghl-tracking"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(c,b,d,e,a,f){
-                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                a=b.createElement(d);f=b.getElementsByTagName(d)[0];
-                a.async=1;a.src=e;f.parentNode.insertBefore(a,f);
-              })(window,document,'script',
-                'https://widgets.leadconnectorhq.com/loader.js',
-                'hl_gtm'
-              );
-              hl_gtm('init', '${GHL_TRACKING_LOCATION_ID}');
-            `,
-          }}
-        />
+        {/* GHL Site Tracking — only injected when a real location ID is configured */}
+        {GHL_TRACKING_LOCATION_ID !== 'YOUR_GHL_LOCATION_ID' && (
+          <Script
+            id="ghl-tracking"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+                (function(c,b,d,e,a,f){
+                  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                  a=b.createElement(d);f=b.getElementsByTagName(d)[0];
+                  a.async=1;a.src=e;f.parentNode.insertBefore(a,f);
+                })(window,document,'script',
+                  'https://widgets.leadconnectorhq.com/loader.js',
+                  'hl_gtm'
+                );
+                hl_gtm('init', '${GHL_TRACKING_LOCATION_ID}');
+              `,
+            }}
+          />
+        )}
 
-        {/* GHL Chat Widget — loads after page is interactive */}
-        <Script
-          id="ghl-chat-widget"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(d,s,c){
-                var js,fjs=d.getElementsByTagName(s)[0];
-                if(d.getElementById(c)){return;}
-                js=d.createElement(s);js.id=c;js.async=true;
-                js.src='https://widgets.leadconnectorhq.com/chat-widget/loader.js';
-                js.setAttribute('data-location-id','${GHL_CHAT_WIDGET_LOCATION_ID}');
-                fjs.parentNode.insertBefore(js,fjs);
-              })(document,'script','ghl-chat-loader');
-            `,
-          }}
-        />
+        {/* GHL Chat Widget — only injected when a real location ID is configured */}
+        {GHL_CHAT_WIDGET_LOCATION_ID !== 'YOUR_GHL_LOCATION_ID' && (
+          <Script
+            id="ghl-chat-widget"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+                (function(d,s,c){
+                  var js,fjs=d.getElementsByTagName(s)[0];
+                  if(d.getElementById(c)){return;}
+                  js=d.createElement(s);js.id=c;js.async=true;
+                  js.src='https://widgets.leadconnectorhq.com/chat-widget/loader.js';
+                  js.setAttribute('data-location-id','${GHL_CHAT_WIDGET_LOCATION_ID}');
+                  fjs.parentNode.insertBefore(js,fjs);
+                })(document,'script','ghl-chat-loader');
+              `,
+            }}
+          />
+        )}
       </body>
     </html>
   )
