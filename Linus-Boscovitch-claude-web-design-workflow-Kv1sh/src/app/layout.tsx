@@ -49,7 +49,6 @@ export const metadata: Metadata = {
     default: 'Social Linus | Web Design, SEO & Lead Generation — Atlanta, GA',
     template: '%s | Social Linus',
   },
-  description: 'Social Linus is an Atlanta-based web design, SEO, and lead generation agency for B2B service companies. 15+ years experience. Real results.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -57,18 +56,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning
       className={`${spaceGrotesk.variable} ${dmSans.variable} ${spaceMono.variable}`}>
       <body className="antialiased">
+        <ScrollReset />
         <Header />
         {children}
         <Footer />
-
-        {/* Disable browser scroll restoration so snap always starts at hero */}
-        <Script
-          id="scroll-reset"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `history.scrollRestoration = 'manual'; window.scrollTo(0, 0);`,
-          }}
-        />
 
         {/* GHL Site Tracking — loads after page is interactive */}
         <Script

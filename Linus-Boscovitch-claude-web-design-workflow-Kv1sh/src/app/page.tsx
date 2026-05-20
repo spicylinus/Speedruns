@@ -1,8 +1,14 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { AnimateIn } from '@/components/motion/AnimateIn'
 import { StatCounter } from '@/components/motion/StatCounter'
 import { HeroAnimated } from '@/components/motion/HeroAnimated'
+
+export const metadata: Metadata = {
+  title: 'Social Linus | Web Design, SEO & Lead Generation — Atlanta, GA',
+  description: 'Social Linus is an Atlanta-based web design, SEO, and lead generation agency for B2B service companies. 15+ years experience. Real results.',
+}
 
 const services = [
   {
