@@ -35,10 +35,15 @@ export class StripeService {
     return paymentLink;
   }
 
-  async createCheckoutSession(customerId: string, planId: 'seo' | 'lead-gen', amount: number) {
+  async createCheckoutSession(customerId: string, planId: 'seo' | 'lead-gen' | 'monitoring', amount: number) {
     // Map planId to price (in a real app, these would be pre-created)
+    let productName = '';
+    if (planId === 'seo') productName = 'SEO Dominance';
+    else if (planId === 'lead-gen') productName = 'Lead Gen Engine';
+    else if (planId === 'monitoring') productName = 'Visibility Monitoring Tier';
+
     const product = await stripe.products.create({
-      name: planId === 'seo' ? 'SEO Dominance' : 'Lead Gen Engine',
+      name: productName,
     });
 
     const price = await stripe.prices.create({
