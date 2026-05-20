@@ -1,4 +1,3 @@
-import type { Metadata, Viewport } from 'next'
 import { Space_Grotesk, DM_Sans, Space_Mono } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
@@ -38,18 +37,6 @@ const spaceMono = Space_Mono({
   variable: '--font-space-mono',
   display: 'swap',
 })
-
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-}
-
-export const metadata: Metadata = {
-  title: {
-    default: 'Social Linus | Web Design, SEO & Lead Generation — Atlanta, GA',
-    template: '%s | Social Linus',
-  },
-}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
