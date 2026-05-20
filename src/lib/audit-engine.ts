@@ -1,7 +1,4 @@
-import { chromium, Page } from 'playwright';
 import * as cheerio from 'cheerio';
-import fs from 'fs';
-import * as path from 'path';
 
 export interface SubScores {
   seo: number;
@@ -59,19 +56,9 @@ const MAX_PAGE_SIZE = 5 * 1024 * 1024; // 5MB
 export async function runAudit(url: string): Promise<AuditResult> {
   const warnings: string[] = [];
   
-  const browser = await chromium.launch({
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    executablePath: process.env.PLAYWRIGHT_BROWSERS_PATH ? undefined : undefined // Use default if path is handled by env
-  });
-  
   try {
-    const context = await browser.newContext({
-      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-    });
-
     // 1. Audit Homepage
-    let homepageData = await fetchPageWithRetry(context, url, 2);
+    let homepageData = await fetchPageWithRetry(url, 2);
     if (homepageData.warning) warnings.push(`Homepage: ${homepageData.warning}`);
 
     const $homepage = cheerio.load(homepageData.html || '');
@@ -80,7 +67,7 @@ export async function runAudit(url: string): Promise<AuditResult> {
     let contactUrl = findContactPageUrl($homepage, url);
     let contactPageData: any = { html: "", warning: "" };
     if (contactUrl && contactUrl !== url) {
-      contactPageData = await fetchPageWithRetry(context, contactUrl, 1);
+      contactPageData = await fetchPageWithRetry(contactUrl, 1);
       if (contactPageData.warning) warnings.push(`Contact Page: ${contactPageData.warning}`);
     }
 
@@ -104,8 +91,8 @@ export async function runAudit(url: string): Promise<AuditResult> {
     const checklist = generateChecklist(revenueLeaks);
     const actionPlan = generateActionPlan(checklist);
     
-    // Save images for mockups
-    const savedImages = await saveClientImages(url, homepageData.images);
+    // No longer saving to filesystem, just returning the collected images
+    const images = [...new Set([...homepageData.images, ...(contactPageData.images || [])])];
     
     return {
       url,
@@ -120,33 +107,51 @@ export async function runAudit(url: string): Promise<AuditResult> {
       revenueLeaks,
       checklist,
       actionPlan,
-      images: savedImages,
+      images: images.slice(0, 10), // Limit to top 10 images
       warnings: warnings.length > 0 ? warnings : undefined,
     };
-  } finally {
-    await browser.close();
+  } catch (error: any) {
+    console.error('Audit engine error:', error);
+    throw error;
   }
 }
 
-async function fetchPageWithRetry(context: any, url: string, retries: number): Promise<{ html: string; loadTime: number; images: string[]; warning?: string }> {
+async function fetchPageWithRetry(url: string, retries: number): Promise<{ html: string; loadTime: number; images: string[]; warning?: string }> {
   let lastError: any;
   for (let i = 0; i <= retries; i++) {
-    const page = await context.newPage();
     try {
       const startTime = Date.now();
-      const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 15000 });
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
+      
+      const response = await fetch(url, {
+        signal: controller.signal,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.5',
+        }
+      });
+      
+      clearTimeout(timeoutId);
       const loadTime = Date.now() - startTime;
 
-      if (!response) throw new Error('No response from server');
-      if (!response.ok()) throw new Error(`HTTP ${response.status()}`);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-      const content = await page.content();
+      const content = await response.text();
       
-      // Extract images while page is open
-      const images = await page.evaluate(() => {
-        return Array.from(document.images)
-          .map(img => img.src)
-          .filter(src => src.startsWith('http') && !src.includes('data:image'));
+      const $ = cheerio.load(content);
+      const images: string[] = [];
+      $('img').each((_, img) => {
+        const src = $(img).attr('src');
+        if (src) {
+          try {
+            const absoluteUrl = new URL(src, url).href;
+            if (absoluteUrl.startsWith('http') && !absoluteUrl.includes('data:image')) {
+              images.push(absoluteUrl);
+            }
+          } catch (e) {}
+        }
       });
 
       if (content.length > MAX_PAGE_SIZE) {
@@ -156,11 +161,10 @@ async function fetchPageWithRetry(context: any, url: string, retries: number): P
       return { html: content, loadTime, images };
     } catch (err: any) {
       lastError = err;
+      console.warn(`Attempt ${i + 1} failed for ${url}: ${err.message}`);
       if (i < retries) {
         await new Promise(r => setTimeout(r, 1000 * (i + 1))); // Linear backoff
       }
-    } finally {
-      await page.close();
     }
   }
 
@@ -368,27 +372,4 @@ function generateActionPlan(checklist: ChecklistItem[]): ActionPlan {
       { task: 'Lead Magnet Creation', time: '2 hours', difficulty: 2 }
     ]
   };
-}
-
-async function saveClientImages(url: string, images: string[]): Promise<string[]> {
-  try {
-    const urlObj = new URL(url);
-    const domain = urlObj.hostname;
-    const clientName = domain.replace(/^www\./, '').split('.')[0];
-    const dir = `/home/team/shared/sales/client-assets/${clientName}`;
-    
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-
-    // Save the metadata JSON
-    fs.writeFileSync(path.join(dir, 'images.json'), JSON.stringify(images, null, 2));
-
-    // For now, we return the URLs. Actual background downloading can be added if needed.
-    // In this sandbox environment, the frontend can use these URLs directly.
-    return images;
-  } catch (e) {
-    console.error('Failed to save client images:', e);
-    return images;
-  }
 }
