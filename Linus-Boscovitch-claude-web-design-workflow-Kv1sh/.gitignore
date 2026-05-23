@@ -1,0 +1,7 @@
+node_modules
+.env
+.env.local
+*.db
+"dev.db*"
+tsconfig.tsbuildinfo
+/src/generated/prisma
