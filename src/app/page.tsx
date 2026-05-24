@@ -278,7 +278,7 @@ export default function Home() {
                 <ServiceCard 
                   icon={Layout} 
                   title="Grand Slam Bundle" 
-                  description="Website Redesign + 90-Day Lead Gen Launch. The ultimate growth machine with a $5,000 revenue guarantee." 
+                  description="Website redesign (5 pages) + Local SEO setup + 90-day lead gen launch. 2 revision rounds included." 
                   impact="2x - 5x Leads" isPopular={true} href="/upsell/grand-slam-bundle/"
                   priceRange="$6,000 (BNPL Available)"
                 />

@@ -27,7 +27,6 @@ export default function UpsellPage() {
   
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
-  const [competitorUrl, setCompetitorUrl] = useState('');
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
@@ -82,18 +81,6 @@ export default function UpsellPage() {
       const invData = await invRes.json();
       
       if (invData.status === 'success') {
-        // 3. Trigger Competitor Audit (Background)
-        if (competitorUrl) {
-          fetch('/api/audit/competitor', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              url: competitorUrl,
-              clientEmail: email
-            })
-          }).catch(err => console.error('Failed to trigger competitor audit:', err));
-        }
-
         setSuccess(true);
         // Redirect to secure Stripe payment page
         if (invData.data.url) {
@@ -125,9 +112,7 @@ export default function UpsellPage() {
           </div>
           <h2 className="text-3xl font-black mb-4 uppercase italic">You're In!</h2>
           <p className="text-slate-500 mb-8 font-medium">
-            We've created your secure Stripe payment portal and sent the details to <span className="font-bold text-slate-900">{email}</span>. 
-            {competitorUrl ? " We've also started your competitor's audit — we'll have that strategy report ready for you in the dashboard." : ""}
-            Once the deposit is confirmed, we'll start building your growth engine immediately.
+            We've created your secure Stripe payment portal and sent the details to <span className="font-bold text-slate-900">{email}</span>. Once the deposit is confirmed, we'll get your project started immediately and you'll have access to your client dashboard within 24 hours.
           </p>
           <button 
             onClick={() => router.push('/delivery/')}
@@ -194,31 +179,45 @@ export default function UpsellPage() {
             </div>
             <h3 className="text-2xl font-bold mb-6 uppercase tracking-tight">The Deliverables</h3>
             <ul className="space-y-4">
-              {offer.details && Object.values(offer.details).map((detail: any, i: number) => (
-                <li key={i} className="flex gap-3 text-slate-300">
+            {offer.deliverables && offer.deliverables.map((detail: string, i: number) => (
+              <li key={i} className="flex gap-3 text-slate-300">
+                <CheckCircle2 className="text-emerald-400 shrink-0" size={20} />
+                <span className="font-medium">{detail}</span>
+              </li>
+            ))}
+            {!offer.deliverables && offer.details && Object.values(offer.details).map((detail: any, i: number) => (
+              <li key={i} className="flex gap-3 text-slate-300">
+                <CheckCircle2 className="text-emerald-400 shrink-0" size={20} />
+                <span className="font-medium">{detail}</span>
+              </li>
+            ))}
+            {!offer.deliverables && !offer.details && (
+              <>
+                <li className="flex gap-3 text-slate-300">
                   <CheckCircle2 className="text-emerald-400 shrink-0" size={20} />
-                  <span className="font-medium">{detail}</span>
+                  <span className="font-medium">Complete Website Redesign</span>
                 </li>
-              ))}
-              {offer.id === 'grand-slam-bundle' && (
-                <li className="flex gap-3 text-emerald-400">
+                <li className="flex gap-3 text-slate-300">
                   <CheckCircle2 className="text-emerald-400 shrink-0" size={20} />
-                  <span className="font-black uppercase tracking-tight">Free Competitor Visibility Audit</span>
+                  <span className="font-medium">Lead Capture Optimization</span>
                 </li>
-              )}
-              {!offer.details && (
-                <>
-                  <li className="flex gap-3 text-slate-300">
-                    <CheckCircle2 className="text-emerald-400 shrink-0" size={20} />
-                    <span className="font-medium">Complete Website Redesign</span>
-                  </li>
-                  <li className="flex gap-3 text-slate-300">
-                    <CheckCircle2 className="text-emerald-400 shrink-0" size={20} />
-                    <span className="font-medium">Lead Capture Optimization</span>
-                  </li>
-                </>
-              )}
+              </>
+            )}
             </ul>
+
+            {offer.excluded && offer.excluded.length > 0 && (
+            <div className="mt-6 pt-6 border-t border-slate-700">
+              <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3">Not Included</p>
+              <ul className="space-y-2">
+                {offer.excluded.map((ex: string, i: number) => (
+                  <li key={i} className="flex gap-3 text-slate-500 text-sm">
+                    <span className="text-slate-600 shrink-0">—</span>
+                    <span>{ex}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            )}
           </motion.div>
 
           <motion.div 
@@ -230,29 +229,36 @@ export default function UpsellPage() {
             <div className="w-12 h-12 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-400 mb-6">
               <ShieldCheck size={24} />
             </div>
-            <h3 className="text-2xl font-bold mb-6 uppercase tracking-tight">The Ironclad Guarantee</h3>
+            <h3 className="text-2xl font-bold mb-6 uppercase tracking-tight">The Completion Guarantee</h3>
             <div className="space-y-6">
-              {offer.subscription_guarantee && (
-                <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
-                  <span className="block text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-2">Ongoing Subscriptions</span>
-                  <p className="text-emerald-50 text-lg leading-relaxed italic font-serif">
-                    "{offer.subscription_guarantee}"
-                  </p>
-                </div>
-              )}
-              {offer.flat_fee_guarantee && (
-                <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
-                  <span className="block text-[10px] font-black text-blue-400 uppercase tracking-widest mb-2">Project Completion</span>
-                  <p className="text-blue-50 text-lg leading-relaxed italic font-serif">
-                    "{offer.flat_fee_guarantee}"
-                  </p>
-                </div>
-              )}
-              {!offer.subscription_guarantee && !offer.flat_fee_guarantee && (
-                <p className="text-emerald-50/90 text-lg leading-relaxed italic font-serif">
-                  "{offer.guarantee || "If we don't increase your monthly revenue by at least $5,000 in 90 days, you pay nothing. Plus, we'll audit your top competitor for free — so you know exactly how to beat them."}"
+            {offer.guarantee && (
+              <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
+                <p className="text-emerald-50 text-lg leading-relaxed">
+                  {offer.guarantee}
                 </p>
-              )}
+              </div>
+            )}
+            {offer.flat_fee_guarantee && (
+              <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
+                <span className="block text-[10px] font-black text-blue-400 uppercase tracking-widest mb-2">Revisions</span>
+                <p className="text-blue-50 text-base leading-relaxed">
+                  {offer.flat_fee_guarantee}
+                </p>
+              </div>
+            )}
+            {offer.subscription_guarantee && (
+              <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
+                <span className="block text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-2">Cancellations</span>
+                <p className="text-emerald-50 text-base leading-relaxed">
+                  {offer.subscription_guarantee}
+                </p>
+              </div>
+            )}
+            {!offer.guarantee && !offer.flat_fee_guarantee && !offer.subscription_guarantee && (
+              <p className="text-emerald-50/90 text-lg leading-relaxed">
+                "Project delivered to agreed scope or we keep working until it is. Cancel anytime after 30 days."
+              </p>
+            )}
             </div>
             <div className="p-4 mt-8 bg-emerald-500/10 rounded-2xl flex items-center gap-4 border border-emerald-500/20">
               <Gift className="text-emerald-400" size={32} />
@@ -311,17 +317,6 @@ export default function UpsellPage() {
               />
             </div>
 
-            <div className="relative">
-              <Zap className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-              <input 
-                type="text" 
-                placeholder="Top Competitor URL (Optional)"
-                value={competitorUrl}
-                onChange={(e) => setCompetitorUrl(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-slate-900 outline-none transition-all font-bold"
-              />
-            </div>
-            
             <div className="flex items-center gap-2 text-slate-500 text-xs py-4 justify-center font-medium">
               <AlertCircle size={14} />
               <span>Payments handled securely via Stripe.</span>
