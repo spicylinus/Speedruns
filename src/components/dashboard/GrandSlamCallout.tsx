@@ -36,7 +36,7 @@ const GrandSlamCallout = () => {
             </div>
             <div className="flex items-center gap-2 text-sm font-bold text-slate-300">
                <Sparkles className="text-emerald-500" size={18} />
-               $2,500 Deposit + Completion
+               $3,000 Deposit + $3,000 at Launch
             </div>
           </div>
         </div>

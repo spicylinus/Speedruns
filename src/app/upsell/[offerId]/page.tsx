@@ -346,10 +346,14 @@ export default function UpsellPage() {
                 <span className="text-lg font-bold text-slate-400"> today</span>
               </div>
               <p className="text-sm text-slate-500 font-medium mb-1">
-                {offer.payment_structure?.split?.label || '$2,500 on completion'}
+                {offer.split?.label || '$3,000 when your site goes live'}
               </p>
               <p className="text-sm text-slate-400 font-medium">
                 Total: ${offer.total_price?.toLocaleString()}
+              </p>
+              <p className="text-xs text-slate-500 font-medium mt-2 flex items-center gap-1">
+                <AlertCircle size={12} />
+                Site goes live when payment is received
               </p>
             </button>
           </div>
@@ -395,9 +399,9 @@ export default function UpsellPage() {
               )}
             </button>
             <p className="mt-4 text-[10px] text-slate-400 font-bold uppercase tracking-widest text-center">
-              {paymentOption === 'full' 
+              {paymentOption === 'full'
                 ? 'Payment links sent immediately. Limited time offer.'
-                : 'Final payment due on project completion. No financing required.'}
+                : 'Site goes live when second payment is received.'}
             </p>
           </div>
 
