@@ -194,7 +194,40 @@ export default function LocalSeoUpsell({ currentTier = 'none' }: { currentTier?:
   );
 }
 
-export function LocalSeoPitch() {
+async function startRetainerCheckout(tierKey: string, email: string) {
+  const res = await fetch('/api/retainer', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ tierKey, email }),
+  });
+  const data = await res.json();
+  if (data.status === 'success' && data.data.url) {
+    window.location.href = data.data.url;
+    return true;
+  }
+  throw new Error(data.message || 'Checkout failed');
+}
+
+export function LocalSeoPitch({ clientEmail }: { clientEmail?: string }) {
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState(clientEmail || '');
+  const [showEmail, setShowEmail] = useState(false);
+
+  const handleSubscribe = async (tierKey: string) => {
+    const targetEmail = clientEmail || email;
+    if (!targetEmail || !targetEmail.includes('@')) {
+      setShowEmail(true);
+      return;
+    }
+    setLoading(true);
+    try {
+      await startRetainerCheckout(tierKey, targetEmail);
+    } catch {
+      alert('Checkout failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <section className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 text-white overflow-hidden relative border border-slate-700">
       <div className="absolute top-0 right-0 w-40 h-40 bg-emerald-500/20 rounded-full blur-[80px]" />
@@ -228,25 +261,58 @@ export function LocalSeoPitch() {
           ))}
         </div>
 
-        <div className="grid grid-cols-3 gap-3 mb-6">
-          <div className="bg-white/5 rounded-xl p-3 text-center border border-white/10">
-            <p className="text-[10px] font-black text-slate-500 uppercase mb-1">Base</p>
-            <p className="text-xl font-black">$497<span className="text-sm font-normal text-slate-400">/mo</span></p>
-          </div>
-          <div className="bg-emerald-500/10 rounded-xl p-3 text-center border border-emerald-500/20">
-            <p className="text-[10px] font-black text-emerald-400 uppercase mb-1">Pro</p>
-            <p className="text-xl font-black">$797<span className="text-sm font-normal text-emerald-300">/mo</span></p>
-          </div>
-          <div className="bg-white/5 rounded-xl p-3 text-center border border-white/10">
-            <p className="text-[10px] font-black text-slate-500 uppercase mb-1">Elite</p>
-            <p className="text-xl font-black">$1,197<span className="text-sm font-normal text-slate-400">/mo</span></p>
-          </div>
-        </div>
+        {showEmail && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-4 space-y-2">
+            <input
+              type="email"
+              placeholder="your@email.com"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white text-sm placeholder-slate-400 outline-none focus:border-emerald-400"
+            />
+            <button
+              onClick={() => handleSubscribe('local-seo-pro')}
+              disabled={loading}
+              className="w-full py-3 bg-emerald-500 text-white rounded-xl text-sm font-bold hover:bg-emerald-600 disabled:opacity-50"
+            >
+              {loading ? 'Redirecting...' : 'Continue to Checkout'}
+            </button>
+            <button onClick={() => setShowEmail(false)} className="w-full py-2 text-slate-500 text-xs hover:text-slate-300">Cancel</button>
+          </motion.div>
+        )}
 
-        <button className="w-full py-4 bg-emerald-500 text-white rounded-xl font-black hover:bg-emerald-600 transition-all text-sm flex items-center justify-center gap-2 group">
-          Add Local SEO
-          <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-        </button>
+        {!showEmail && (
+          <>
+            <div className="grid grid-cols-3 gap-3 mb-6">
+              <div className="bg-white/5 rounded-xl p-3 text-center border border-white/10">
+                <p className="text-[10px] font-black text-slate-500 uppercase mb-1">Base</p>
+                <p className="text-xl font-black">$497<span className="text-sm font-normal text-slate-400">/mo</span></p>
+              </div>
+              <div className="bg-emerald-500/10 rounded-xl p-3 text-center border border-emerald-500/20">
+                <p className="text-[10px] font-black text-emerald-400 uppercase mb-1">Pro</p>
+                <p className="text-xl font-black">$797<span className="text-sm font-normal text-emerald-300">/mo</span></p>
+              </div>
+              <div className="bg-white/5 rounded-xl p-3 text-center border border-white/10">
+                <p className="text-[10px] font-black text-slate-500 uppercase mb-1">Elite</p>
+                <p className="text-xl font-black">$1,197<span className="text-sm font-normal text-slate-400">/mo</span></p>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <button onClick={() => handleSubscribe('local-seo-pro')} disabled={loading} className="w-full py-4 bg-emerald-500 text-white rounded-xl font-black hover:bg-emerald-600 transition-all text-sm disabled:opacity-50">
+                Add Local SEO — $497/mo
+              </button>
+              <div className="grid grid-cols-2 gap-2">
+                <button onClick={() => handleSubscribe('local-seo-pro')} disabled={loading} className="py-2 bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 rounded-xl text-xs font-bold hover:bg-emerald-500/30 disabled:opacity-50">
+                  Pro $797/mo
+                </button>
+                <button onClick={() => handleSubscribe('local-seo-elite')} disabled={loading} className="py-2 bg-white/5 border border-white/10 text-slate-300 rounded-xl text-xs font-bold hover:bg-white/10 disabled:opacity-50">
+                  Elite $1,197/mo
+                </button>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </section>
   );

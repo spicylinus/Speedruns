@@ -193,7 +193,40 @@ export default function FullGrowthPartnerUpsell({ currentTier = 'none' }: { curr
   );
 }
 
-export function FullGrowthPartnerPitch() {
+async function startRetainerCheckout(tierKey: string, email: string) {
+  const res = await fetch('/api/retainer', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ tierKey, email }),
+  });
+  const data = await res.json();
+  if (data.status === 'success' && data.data.url) {
+    window.location.href = data.data.url;
+    return true;
+  }
+  throw new Error(data.message || 'Checkout failed');
+}
+
+export function FullGrowthPartnerPitch({ clientEmail }: { clientEmail?: string }) {
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState(clientEmail || '');
+  const [showEmail, setShowEmail] = useState(false);
+
+  const handleSubscribe = async (tierKey: string) => {
+    const targetEmail = clientEmail || email;
+    if (!targetEmail || !targetEmail.includes('@')) {
+      setShowEmail(true);
+      return;
+    }
+    setLoading(true);
+    try {
+      await startRetainerCheckout(tierKey, targetEmail);
+    } catch {
+      alert('Checkout failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <section className="bg-gradient-to-br from-amber-900 to-slate-900 rounded-3xl p-8 text-white overflow-hidden relative border border-amber-700/30">
       <div className="absolute top-0 right-0 w-40 h-40 bg-amber-500/20 rounded-full blur-[80px]" />
@@ -241,10 +274,43 @@ export function FullGrowthPartnerPitch() {
           ))}
         </div>
 
-        <button className="w-full py-4 bg-amber-500 text-slate-900 rounded-xl font-black hover:bg-amber-400 transition-all text-sm flex items-center justify-center gap-2 group">
-          Add Full Growth Partner
-          <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-        </button>
+        {showEmail && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-4 space-y-2">
+            <input
+              type="email"
+              placeholder="your@email.com"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white text-sm placeholder-slate-400 outline-none focus:border-amber-400"
+            />
+            <button
+              onClick={() => handleSubscribe('full-growth-base')}
+              disabled={loading}
+              className="w-full py-3 bg-amber-500 text-slate-900 rounded-xl text-sm font-bold hover:bg-amber-400 disabled:opacity-50"
+            >
+              {loading ? 'Redirecting...' : 'Continue to Checkout'}
+            </button>
+            <button onClick={() => setShowEmail(false)} className="w-full py-2 text-slate-500 text-xs hover:text-slate-300">Cancel</button>
+          </motion.div>
+        )}
+
+        {!showEmail && (
+          <>
+            <div className="space-y-2">
+              <button onClick={() => handleSubscribe('full-growth-base')} disabled={loading} className="w-full py-4 bg-amber-500 text-slate-900 rounded-xl font-black hover:bg-amber-400 transition-all text-sm disabled:opacity-50">
+                Add Full Growth Partner — $1,997/mo
+              </button>
+              <div className="grid grid-cols-2 gap-2">
+                <button onClick={() => handleSubscribe('full-growth-pro')} disabled={loading} className="py-2 bg-amber-500/20 border border-amber-500/30 text-amber-300 rounded-xl text-xs font-bold hover:bg-amber-500/30 disabled:opacity-50">
+                  Pro $3,997/mo
+                </button>
+                <button onClick={() => handleSubscribe('full-growth-elite')} disabled={loading} className="py-2 bg-white/5 border border-white/10 text-slate-300 rounded-xl text-xs font-bold hover:bg-white/10 disabled:opacity-50">
+                  Elite $4,797/mo
+                </button>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </section>
   );

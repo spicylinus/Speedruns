@@ -196,7 +196,40 @@ export default function LeadGenUpsell({ currentTier = 'none' }: { currentTier?: 
   );
 }
 
-export function LeadGenPitch() {
+async function startRetainerCheckout(tierKey: string, email: string) {
+  const res = await fetch('/api/retainer', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ tierKey, email }),
+  });
+  const data = await res.json();
+  if (data.status === 'success' && data.data.url) {
+    window.location.href = data.data.url;
+    return true;
+  }
+  throw new Error(data.message || 'Checkout failed');
+}
+
+export function LeadGenPitch({ clientEmail }: { clientEmail?: string }) {
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState(clientEmail || '');
+  const [showEmail, setShowEmail] = useState(false);
+
+  const handleSubscribe = async (tierKey: string) => {
+    const targetEmail = clientEmail || email;
+    if (!targetEmail || !targetEmail.includes('@')) {
+      setShowEmail(true);
+      return;
+    }
+    setLoading(true);
+    try {
+      await startRetainerCheckout(tierKey, targetEmail);
+    } catch {
+      alert('Checkout failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <section className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 text-white overflow-hidden relative border border-slate-700">
       <div className="absolute top-0 right-0 w-40 h-40 bg-blue-500/20 rounded-full blur-[80px]" />
@@ -245,10 +278,43 @@ export function LeadGenPitch() {
           </div>
         </div>
 
-        <button className="w-full py-4 bg-blue-500 text-white rounded-xl font-black hover:bg-blue-600 transition-all text-sm flex items-center justify-center gap-2 group">
-          Add Lead Gen Manager
-          <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-        </button>
+        {showEmail && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-4 space-y-2">
+            <input
+              type="email"
+              placeholder="your@email.com"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white text-sm placeholder-slate-400 outline-none focus:border-blue-400"
+            />
+            <button
+              onClick={() => handleSubscribe('lead-gen-base')}
+              disabled={loading}
+              className="w-full py-3 bg-blue-500 text-white rounded-xl text-sm font-bold hover:bg-blue-600 disabled:opacity-50"
+            >
+              {loading ? 'Redirecting...' : 'Continue to Checkout'}
+            </button>
+            <button onClick={() => setShowEmail(false)} className="w-full py-2 text-slate-500 text-xs hover:text-slate-300">Cancel</button>
+          </motion.div>
+        )}
+
+        {!showEmail && (
+          <>
+            <div className="space-y-2">
+              <button onClick={() => handleSubscribe('lead-gen-base')} disabled={loading} className="w-full py-4 bg-blue-500 text-white rounded-xl font-black hover:bg-blue-600 transition-all text-sm disabled:opacity-50">
+                Add Lead Gen Manager — $997/mo
+              </button>
+              <div className="grid grid-cols-2 gap-2">
+                <button onClick={() => handleSubscribe('lead-gen-pro')} disabled={loading} className="py-2 bg-blue-500/20 border border-blue-500/30 text-blue-300 rounded-xl text-xs font-bold hover:bg-blue-500/30 disabled:opacity-50">
+                  Pro $1,997/mo
+                </button>
+                <button onClick={() => handleSubscribe('lead-gen-elite')} disabled={loading} className="py-2 bg-white/5 border border-white/10 text-slate-300 rounded-xl text-xs font-bold hover:bg-white/10 disabled:opacity-50">
+                  Elite $2,697/mo
+                </button>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </section>
   );
