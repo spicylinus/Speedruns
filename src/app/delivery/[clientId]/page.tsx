@@ -24,6 +24,7 @@ import WorkLogItem from '@/components/delivery/WorkLogItem';
 import ReportPreview from '@/components/delivery/ReportPreview';
 import BillingSection from '@/components/delivery/BillingSection';
 import CompetitorSection from '@/components/delivery/CompetitorSection';
+import WebsiteProtectionUpsell, { WebsiteProtectionPitch } from '@/components/delivery/WebsiteProtectionUpsell';
 import { CLIENT_DELIVERIES } from '@/lib/mock-deliveries';
 
 export default function ClientDeliveryDashboard() {
@@ -196,6 +197,8 @@ export default function ClientDeliveryDashboard() {
                     <ChevronRight size={18} />
                   </button>
                 </section>
+
+                <WebsiteProtectionPitch />
               </div>
             </div>
           </motion.div>
