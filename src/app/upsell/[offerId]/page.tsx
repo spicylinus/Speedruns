@@ -11,7 +11,8 @@ import {
   Flame,
   ArrowLeft,
   Mail,
-  User
+  User,
+  CreditCard
 } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
@@ -24,6 +25,7 @@ export default function UpsellPage() {
   const [offer, setOffer] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
+  const [paymentOption, setPaymentOption] = useState<'full' | 'split'>('full');
   
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -53,7 +55,6 @@ export default function UpsellPage() {
     
     setProcessing(true);
     try {
-      // 1. Create/Get Customer
       const custRes = await fetch('/api/customers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -66,23 +67,23 @@ export default function UpsellPage() {
       }
 
       const customerId = custData.data.id;
+      const amount = paymentOption === 'full' 
+        ? offer.paid_in_full_price 
+        : offer.deposit;
 
-      // 2. Create Invoice
       const invRes = await fetch('/api/invoices', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           customerId,
-          amount: offer.upfront_bnpl || offer.deposit || offer.total_price,
-          description: `Grand Slam Acceptance: ${offer.name}`,
-          bnplEnabled: !!offer.upfront_bnpl
+          amount,
+          description: `Grand Slam: ${paymentOption === 'full' ? 'Paid in Full' : 'Deposit'} — ${offer.name}`,
         })
       });
       const invData = await invRes.json();
       
       if (invData.status === 'success') {
         setSuccess(true);
-        // Redirect to secure Stripe payment page
         if (invData.data.url) {
           window.location.href = invData.data.url;
         }
@@ -147,14 +148,14 @@ export default function UpsellPage() {
             className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400 font-bold text-xs uppercase tracking-widest mb-6"
           >
             <Flame size={14} />
-            Limited Time Offer
+            Limited Time — Paid in Full Offer
           </motion.div>
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-4xl md:text-6xl font-black mb-6 leading-tight uppercase italic tracking-tighter"
           >
-            The <span className="text-emerald-400 underline decoration-emerald-400/30">Grand Slam</span> Revenue Machine
+            The <span className="text-emerald-400 underline decoration-emerald-400/30">Grand Slam</span> Package
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -177,7 +178,7 @@ export default function UpsellPage() {
             <div className="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-400 mb-6">
               <Zap size={24} />
             </div>
-            <h3 className="text-2xl font-bold mb-6 uppercase tracking-tight">The Deliverables</h3>
+            <h3 className="text-2xl font-bold mb-6 uppercase tracking-tight">What You Get</h3>
             <ul className="space-y-4">
             {offer.deliverables && offer.deliverables.map((detail: string, i: number) => (
               <li key={i} className="flex gap-3 text-slate-300">
@@ -191,18 +192,6 @@ export default function UpsellPage() {
                 <span className="font-medium">{detail}</span>
               </li>
             ))}
-            {!offer.deliverables && !offer.details && (
-              <>
-                <li className="flex gap-3 text-slate-300">
-                  <CheckCircle2 className="text-emerald-400 shrink-0" size={20} />
-                  <span className="font-medium">Complete Website Redesign</span>
-                </li>
-                <li className="flex gap-3 text-slate-300">
-                  <CheckCircle2 className="text-emerald-400 shrink-0" size={20} />
-                  <span className="font-medium">Lead Capture Optimization</span>
-                </li>
-              </>
-            )}
             </ul>
 
             {offer.excluded && offer.excluded.length > 0 && (
@@ -246,56 +235,127 @@ export default function UpsellPage() {
                 </p>
               </div>
             )}
-            {offer.subscription_guarantee && (
+            {offer.cancellation_policy && (
               <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
-                <span className="block text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-2">Cancellations</span>
-                <p className="text-emerald-50 text-base leading-relaxed">
-                  {offer.subscription_guarantee}
+                <span className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Cancellations</span>
+                <p className="text-slate-300 text-base leading-relaxed">
+                  {offer.cancellation_policy}
                 </p>
               </div>
             )}
-            {!offer.guarantee && !offer.flat_fee_guarantee && !offer.subscription_guarantee && (
-              <p className="text-emerald-50/90 text-lg leading-relaxed">
-                "Project delivered to agreed scope or we keep working until it is. Cancel anytime after 30 days."
-              </p>
-            )}
             </div>
-            <div className="p-4 mt-8 bg-emerald-500/10 rounded-2xl flex items-center gap-4 border border-emerald-500/20">
-              <Gift className="text-emerald-400" size={32} />
-              <div className="text-sm">
-                <span className="block font-black text-emerald-400 uppercase tracking-widest">Bonus Gift</span>
-                <span className="text-emerald-100/60 font-medium">Includes 30 days of VIP tech support.</span>
+
+            {offer.bonuses && offer.bonuses.length > 0 && (
+              <div className="mt-8 p-4 bg-emerald-500/10 rounded-2xl border border-emerald-500/20">
+                <div className="flex items-center gap-2 mb-3">
+                  <Gift className="text-emerald-400" size={20} />
+                  <span className="block font-black text-emerald-400 uppercase tracking-widest text-xs">Paid in Full Bonus</span>
+                </div>
+                <ul className="space-y-2">
+                  {offer.bonuses.map((bonus: string, i: number) => (
+                    <li key={i} className="flex gap-2 text-emerald-100/80 text-sm">
+                      <CheckCircle2 className="text-emerald-400 shrink-0" size={16} />
+                      {bonus}
+                    </li>
+                  ))}
+                </ul>
+                {offer.bonus_condition && (
+                  <p className="mt-3 text-[10px] text-emerald-400/60 font-medium uppercase tracking-widest">
+                    {offer.bonus_condition}
+                  </p>
+                )}
               </div>
-            </div>
+            )}
           </motion.div>
         </div>
 
-        {/* Checkout Form */}
+        {/* Payment Options */}
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white text-slate-900 rounded-[40px] p-10 md:p-16 text-center shadow-2xl relative overflow-hidden"
+          className="bg-white text-slate-900 rounded-[40px] p-10 md:p-16 shadow-2xl relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 p-8">
              <div className="flex items-center gap-2 text-slate-300 font-bold text-xs uppercase opacity-40">
-               <ShieldCheck size={16} />
-               Secure Stripe Checkout
+               <CreditCard size={16} />
+               Secure Checkout
              </div>
           </div>
           
-          <h2 className="text-sm font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Finalize Investment</h2>
-          <div className="flex items-center justify-center gap-4 mb-12">
-            <span className="text-5xl md:text-8xl font-black tracking-tighter">
-              ${offer.upfront_bnpl ? offer.upfront_bnpl.toLocaleString() : offer.total_price.toLocaleString()}
-            </span>
-            <div className="text-left">
-               <span className="block text-xl font-bold line-through text-slate-300">${(offer.total_value || offer.total_price * 1.5).toLocaleString()}</span>
-               <span className="block text-xs font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded tracking-tighter">SAVE 30%+ TODAY</span>
-            </div>
+          <h2 className="text-sm font-black uppercase tracking-[0.2em] text-slate-400 mb-8">Choose Your Plan</h2>
+          
+          {/* Payment Option Toggle */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+            {/* Paid in Full */}
+            <button
+              onClick={() => setPaymentOption('full')}
+              className={`relative p-6 rounded-2xl border-2 text-left transition-all ${
+                paymentOption === 'full'
+                  ? 'border-slate-900 bg-slate-50 shadow-lg'
+                  : 'border-slate-200 hover:border-slate-300'
+              }`}
+            >
+              {paymentOption === 'full' && (
+                <div className="absolute -top-3 left-4">
+                  <span className="bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full">
+                    Best Value
+                  </span>
+                </div>
+              )}
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <p className="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-1">Paid in Full</p>
+                  <span className="text-4xl font-black tracking-tighter">
+                    ${offer.paid_in_full_price?.toLocaleString()}
+                  </span>
+                </div>
+                {offer.paid_in_full_savings && (
+                  <span className="text-xs font-black text-white bg-emerald-500 px-2 py-1 rounded">
+                    Save ${offer.paid_in_full_savings.toLocaleString()}
+                  </span>
+                )}
+              </div>
+              <p className="text-sm text-slate-500 font-medium mb-4">
+                {offer.payment_structure?.paid_in_full?.label || 'One payment, done today'}
+              </p>
+              <div className="space-y-1">
+                {offer.bonuses?.map((bonus: string, i: number) => (
+                  <div key={i} className="flex items-center gap-2 text-emerald-700 text-sm font-medium">
+                    <CheckCircle2 className="text-emerald-500" size={14} />
+                    {bonus}
+                  </div>
+                ))}
+              </div>
+            </button>
+
+            {/* Split Payment */}
+            <button
+              onClick={() => setPaymentOption('split')}
+              className={`p-6 rounded-2xl border-2 text-left transition-all ${
+                paymentOption === 'split'
+                  ? 'border-slate-900 bg-slate-50 shadow-lg'
+                  : 'border-slate-200 hover:border-slate-300'
+              }`}
+            >
+              <div className="mb-4">
+                <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Split Payment</p>
+                <span className="text-4xl font-black tracking-tighter">
+                  ${offer.deposit?.toLocaleString()}
+                </span>
+                <span className="text-lg font-bold text-slate-400"> today</span>
+              </div>
+              <p className="text-sm text-slate-500 font-medium mb-1">
+                {offer.payment_structure?.split?.label || '$2,500 on completion'}
+              </p>
+              <p className="text-sm text-slate-400 font-medium">
+                Total: ${offer.total_price?.toLocaleString()}
+              </p>
+            </button>
           </div>
 
-          <div className="max-w-md mx-auto mb-10 space-y-4">
+          {/* Form + CTA */}
+          <div className="max-w-md mx-auto space-y-4">
             <div className="relative">
               <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
               <input 
@@ -327,15 +387,17 @@ export default function UpsellPage() {
               disabled={processing}
               className="w-full py-6 bg-slate-900 text-white rounded-2xl text-xl font-black hover:bg-slate-800 transition-all shadow-xl flex items-center justify-center gap-3 group disabled:opacity-50"
             >
-              {processing ? 'CREATING SECURE PORTAL...' : (
+              {processing ? 'PROCESSING...' : (
                 <>
-                  ACTIVATE GROWTH ENGINE
+                  {paymentOption === 'full' ? 'SECURE PAID IN FULL SPOT' : 'SECURE YOUR DEPOSIT'}
                   <ArrowRight className="group-hover:translate-x-1 transition-transform" />
                 </>
               )}
             </button>
-            <p className="mt-4 text-[10px] text-slate-400 font-bold uppercase tracking-widest">
-              No long-term contracts. Cancel anytime. BNPL eligibility subject to approval.
+            <p className="mt-4 text-[10px] text-slate-400 font-bold uppercase tracking-widest text-center">
+              {paymentOption === 'full' 
+                ? 'Payment links sent immediately. Limited time offer.'
+                : 'Final payment due on project completion. No financing required.'}
             </p>
           </div>
 
