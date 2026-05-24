@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+import { chromium, Browser } from 'playwright';
 
 export interface SubScores {
   seo: number;
@@ -52,6 +53,15 @@ export interface AuditResult {
 }
 
 const MAX_PAGE_SIZE = 5 * 1024 * 1024; // 5MB
+
+let _browser: Browser | null = null;
+
+async function getBrowser(): Promise<Browser> {
+  if (!_browser) {
+    _browser = await chromium.launch({ headless: true });
+  }
+  return _browser;
+}
 
 export async function runAudit(url: string): Promise<AuditResult> {
   const warnings: string[] = [];
@@ -123,7 +133,7 @@ async function fetchPageWithRetry(url: string, retries: number): Promise<{ html:
       const startTime = Date.now();
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 15000);
-      
+
       const response = await fetch(url, {
         signal: controller.signal,
         headers: {
@@ -132,14 +142,14 @@ async function fetchPageWithRetry(url: string, retries: number): Promise<{ html:
           'Accept-Language': 'en-US,en;q=0.5',
         }
       });
-      
+
       clearTimeout(timeoutId);
       const loadTime = Date.now() - startTime;
 
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
       const content = await response.text();
-      
+
       const $ = cheerio.load(content);
       const images: string[] = [];
       $('img').each((_, img) => {
@@ -166,6 +176,36 @@ async function fetchPageWithRetry(url: string, retries: number): Promise<{ html:
         await new Promise(r => setTimeout(r, 1000 * (i + 1))); // Linear backoff
       }
     }
+  }
+
+  // Fallback: try Playwright (headless browser) if fetch failed
+  console.warn(`Fetch failed for ${url}, falling back to Playwright browser...`);
+  try {
+    const browser = await getBrowser();
+    const page = await browser.newPage();
+    const startTime = Date.now();
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    const loadTime = Date.now() - startTime;
+    const content = await page.content();
+    await page.close();
+
+    const $ = cheerio.load(content);
+    const images: string[] = [];
+    $('img').each((_, img) => {
+      const src = $(img).attr('src');
+      if (src) {
+        try {
+          const absoluteUrl = new URL(src, url).href;
+          if (absoluteUrl.startsWith('http') && !absoluteUrl.includes('data:image')) {
+            images.push(absoluteUrl);
+          }
+        } catch (e) {}
+      }
+    });
+
+    return { html: content, loadTime, images };
+  } catch (pwErr: any) {
+    console.warn(`Playwright fallback also failed for ${url}: ${pwErr.message}`);
   }
 
   // Graceful degradation: return empty but with warning
