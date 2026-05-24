@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { 
   Zap, 
   ShieldCheck, 
@@ -12,11 +12,65 @@ import {
   ArrowLeft,
   Mail,
   User,
-  CreditCard
+  CreditCard,
+  Clock,
+  Star,
+  X,
+  FileText,
+  Layers,
+  Rocket,
+  MessageSquare
 } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+
+interface Bump {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  icon: React.ReactNode;
+}
+
+const BUMPS: Bump[] = [
+  {
+    id: 'content-writing',
+    name: 'Content Writing',
+    description: 'We write all 5 pages — headlines, copy, CTAs. You just approve.',
+    price: 1500,
+    icon: <FileText size={20} />,
+  },
+  {
+    id: 'extra-revision',
+    name: 'Extra Revision Round',
+    description: 'Third round of revisions for copy and images. Peace of mind.',
+    price: 500,
+    icon: <Layers size={20} />,
+  },
+  {
+    id: 'priority-launch',
+    name: 'Priority Launch',
+    description: 'Your project jumps to the front. Site live in 2 weeks instead of 4.',
+    price: 1000,
+    icon: <Rocket size={20} />,
+  },
+  {
+    id: 'review-management',
+    name: 'Reputation Management',
+    description: 'We request reviews, monitor responses, manage your online reputation. 90 days.',
+    price: 900,
+    icon: <Star size={20} />,
+  },
+];
+
+const OTO_OFFER = {
+  name: '6-Month Lead Gen Management',
+  description: 'We manage your lead flow, automate follow-ups, and optimize for conversions. 6 months prepaid.',
+  price: 4997,
+  originalPrice: 5982,
+  savings: 985,
+};
 
 export default function UpsellPage() {
   const params = useParams();
@@ -26,10 +80,14 @@ export default function UpsellPage() {
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
   const [paymentOption, setPaymentOption] = useState<'full' | 'split'>('full');
-  
+  const [selectedBumps, setSelectedBumps] = useState<Set<string>>(new Set());
+  const [showOto, setShowOto] = useState(false);
+  const [otoTimeLeft, setOtoTimeLeft] = useState(8 * 60); // 8 minutes in seconds
+  const [otoAccepted, setOtoAccepted] = useState(false);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [success, setSuccess] = useState(false);
+  const otoTriggered = useRef(false);
 
   useEffect(() => {
     async function fetchOffer() {
@@ -46,6 +104,44 @@ export default function UpsellPage() {
     }
     fetchOffer();
   }, [offerId]);
+
+  // OTO countdown timer
+  useEffect(() => {
+    if (!showOto || otoAccepted) return;
+    const interval = setInterval(() => {
+      setOtoTimeLeft(prev => {
+        if (prev <= 1) {
+          setShowOto(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [showOto, otoAccepted]);
+
+  const toggleBump = (id: string) => {
+    setSelectedBumps(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const bumpsTotal = Array.from(selectedBumps).reduce((sum, id) => {
+    const bump = BUMPS.find(b => b.id === id);
+    return sum + (bump?.price || 0);
+  }, 0);
+
+  const getBaseAmount = () => {
+    if (!offer) return 0;
+    return paymentOption === 'full' 
+      ? offer.paid_in_full_price 
+      : offer.deposit;
+  };
+
+  const getTotalAmount = () => getBaseAmount() + bumpsTotal;
 
   const handleAccept = async () => {
     if (!email || !email.includes('@')) {
@@ -67,17 +163,23 @@ export default function UpsellPage() {
       }
 
       const customerId = custData.data.id;
-      const amount = paymentOption === 'full' 
-        ? offer.paid_in_full_price 
-        : offer.deposit;
+      const bumpsList = Array.from(selectedBumps).map(id => {
+        const bump = BUMPS.find(b => b.id === id);
+        return bump ? { id: bump.id, name: bump.name, price: bump.price } : null;
+      }).filter(Boolean);
+      const baseAmount = getBaseAmount();
+      const otoAmount = otoAccepted ? OTO_OFFER.price : 0;
 
       const invRes = await fetch('/api/invoices', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           customerId,
-          amount,
+          amount: baseAmount,
           description: `Grand Slam: ${paymentOption === 'full' ? 'Paid in Full' : 'Deposit'} — ${offer.name}`,
+          bumps: bumpsList,
+          otoAmount,
+          otoName: otoAccepted ? OTO_OFFER.name : null,
         })
       });
       const invData = await invRes.json();
@@ -95,6 +197,12 @@ export default function UpsellPage() {
     } finally {
       setProcessing(false);
     }
+  };
+
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}:${s.toString().padStart(2, '0')}`;
   };
 
   if (loading) return <div className="min-h-screen flex items-center justify-center bg-slate-900 text-white font-bold">Loading Premium Offer...</div>;
@@ -128,6 +236,74 @@ export default function UpsellPage() {
 
   return (
     <main className="min-h-screen bg-slate-900 text-white selection:bg-emerald-500 selection:text-white">
+      <AnimatePresence>
+        {/* OTO Modal */}
+        {showOto && !otoAccepted && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/90 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative bg-white text-slate-900 rounded-[32px] p-10 md:p-14 max-w-lg w-full shadow-2xl text-center"
+            >
+              <button 
+                onClick={() => setShowOto(false)}
+                className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors"
+              >
+                <X size={24} />
+              </button>
+
+              {/* Timer */}
+              <div className="flex items-center justify-center gap-2 text-red-600 font-black text-sm mb-4 uppercase tracking-widest">
+                <Clock size={16} />
+                Offer expires in
+                <span className="text-2xl tabular-nums">{formatTime(otoTimeLeft)}</span>
+              </div>
+
+              <div className="w-16 h-16 bg-slate-900 rounded-2xl flex items-center justify-center text-white mx-auto mb-6">
+                <Zap size={28} />
+              </div>
+
+              <p className="text-[10px] font-black text-red-600 uppercase tracking-widest mb-2">One-Time Add-On</p>
+              <h3 className="text-2xl md:text-3xl font-black mb-3">{OTO_OFFER.name}</h3>
+              <p className="text-slate-500 mb-6 font-medium">{OTO_OFFER.description}</p>
+
+              <div className="flex items-center justify-center gap-3 mb-8">
+                <span className="text-4xl font-black">${OTO_OFFER.price.toLocaleString()}</span>
+                <div className="text-left">
+                  <span className="block text-sm font-bold line-through text-slate-300">${OTO_OFFER.originalPrice.toLocaleString()}</span>
+                  <span className="block text-xs font-black text-emerald-600">Save ${OTO_OFFER.savings}</span>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <button
+                  onClick={() => { setOtoAccepted(true); setShowOto(false); }}
+                  className="w-full py-4 bg-emerald-600 text-white rounded-2xl font-black hover:bg-emerald-700 transition-all"
+                >
+                  YES — Add to My Order
+                </button>
+                <button
+                  onClick={() => setShowOto(false)}
+                  className="w-full py-3 text-slate-400 font-bold hover:text-slate-600 transition-colors text-sm"
+                >
+                  No thanks, I'll skip this
+                </button>
+              </div>
+
+              <p className="mt-6 text-[10px] text-slate-400 font-medium uppercase tracking-widest">
+                This offer will not be extended. Not available later.
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Background Glow */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/20 rounded-full blur-[120px]" />
@@ -181,12 +357,6 @@ export default function UpsellPage() {
             <h3 className="text-2xl font-bold mb-6 uppercase tracking-tight">What You Get</h3>
             <ul className="space-y-4">
             {offer.deliverables && offer.deliverables.map((detail: string, i: number) => (
-              <li key={i} className="flex gap-3 text-slate-300">
-                <CheckCircle2 className="text-emerald-400 shrink-0" size={20} />
-                <span className="font-medium">{detail}</span>
-              </li>
-            ))}
-            {!offer.deliverables && offer.details && Object.values(offer.details).map((detail: any, i: number) => (
               <li key={i} className="flex gap-3 text-slate-300">
                 <CheckCircle2 className="text-emerald-400 shrink-0" size={20} />
                 <span className="font-medium">{detail}</span>
@@ -289,7 +459,13 @@ export default function UpsellPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
             {/* Paid in Full */}
             <button
-              onClick={() => setPaymentOption('full')}
+              onClick={() => {
+                setPaymentOption('full');
+                if (!otoTriggered.current) {
+                  otoTriggered.current = true;
+                  setShowOto(true);
+                }
+              }}
               className={`relative p-6 rounded-2xl border-2 text-left transition-all ${
                 paymentOption === 'full'
                   ? 'border-slate-900 bg-slate-50 shadow-lg'
@@ -317,7 +493,7 @@ export default function UpsellPage() {
                 )}
               </div>
               <p className="text-sm text-slate-500 font-medium mb-4">
-                {offer.payment_structure?.paid_in_full?.label || 'One payment, done today'}
+                {offer.split?.label || 'One payment, done today'}
               </p>
               <div className="space-y-1">
                 {offer.bonuses?.map((bonus: string, i: number) => (
@@ -358,6 +534,51 @@ export default function UpsellPage() {
             </button>
           </div>
 
+          {/* Immediate Bumps */}
+          <div className="mb-10">
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Add-Ons</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {BUMPS.map(bump => (
+                <button
+                  key={bump.id}
+                  onClick={() => toggleBump(bump.id)}
+                  className={`flex items-start gap-4 p-4 rounded-2xl border-2 text-left transition-all ${
+                    selectedBumps.has(bump.id)
+                      ? 'border-emerald-500 bg-emerald-50'
+                      : 'border-slate-200 hover:border-slate-300'
+                  }`}
+                >
+                  <div className={`shrink-0 w-10 h-10 rounded-xl flex items-center justify-center ${
+                    selectedBumps.has(bump.id) ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-500'
+                  }`}>
+                    {bump.icon}
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-start justify-between gap-2 mb-1">
+                      <p className="font-black text-slate-900 text-sm">{bump.name}</p>
+                      <span className="font-black text-slate-900 text-sm shrink-0">${bump.price.toLocaleString()}</span>
+                    </div>
+                    <p className="text-xs text-slate-500 font-medium leading-relaxed">{bump.description}</p>
+                  </div>
+                  {selectedBumps.has(bump.id) && (
+                    <CheckCircle2 className="text-emerald-500 shrink-0 mt-1" size={16} />
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Order Total */}
+          {bumpsTotal > 0 && (
+            <div className="mb-6 p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between">
+              <div>
+                <p className="text-sm font-bold text-slate-500">Selected add-ons</p>
+                <p className="text-xs text-slate-400">{Array.from(selectedBumps).map(id => BUMPS.find(b => b.id === id)?.name).join(', ')}</p>
+              </div>
+              <span className="text-xl font-black text-slate-900">+${bumpsTotal.toLocaleString()}</span>
+            </div>
+          )}
+
           {/* Form + CTA */}
           <div className="max-w-md mx-auto space-y-4">
             <div className="relative">
@@ -394,6 +615,7 @@ export default function UpsellPage() {
               {processing ? 'PROCESSING...' : (
                 <>
                   {paymentOption === 'full' ? 'SECURE PAID IN FULL SPOT' : 'SECURE YOUR DEPOSIT'}
+                  {selectedBumps.size > 0 && <span className="text-sm font-normal opacity-70">(+${bumpsTotal.toLocaleString()} add-ons)</span>}
                   <ArrowRight className="group-hover:translate-x-1 transition-transform" />
                 </>
               )}
