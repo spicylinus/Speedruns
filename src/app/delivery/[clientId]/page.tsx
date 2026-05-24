@@ -25,6 +25,7 @@ import ReportPreview from '@/components/delivery/ReportPreview';
 import BillingSection from '@/components/delivery/BillingSection';
 import CompetitorSection from '@/components/delivery/CompetitorSection';
 import WebsiteProtectionUpsell, { WebsiteProtectionPitch } from '@/components/delivery/WebsiteProtectionUpsell';
+import LocalSeoUpsell, { LocalSeoPitch } from '@/components/delivery/LocalSeoUpsell';
 import { CLIENT_DELIVERIES } from '@/lib/mock-deliveries';
 
 export default function ClientDeliveryDashboard() {
@@ -199,6 +200,8 @@ export default function ClientDeliveryDashboard() {
                 </section>
 
                 <WebsiteProtectionPitch />
+
+                <LocalSeoPitch />
               </div>
             </div>
           </motion.div>

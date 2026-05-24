@@ -1,0 +1,253 @@
+'use client';
+
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { MapPin, CheckCircle2, ArrowRight, TrendingUp, Star, Megaphone } from 'lucide-react';
+
+interface SeoTier {
+  name: string;
+  price: number;
+  period: string;
+  features: string[];
+  highlighted?: boolean;
+  badge?: string;
+}
+
+const SEO_TIERS: SeoTier[] = [
+  {
+    name: 'Base',
+    price: 497,
+    period: '/mo',
+    features: [
+      'Google Business Profile posting (2x/week)',
+      'Review response management',
+      'Citation consistency monitoring',
+      'Local rank tracking — monthly report',
+    ],
+  },
+  {
+    name: 'Pro',
+    price: 797,
+    period: '/mo',
+    highlighted: true,
+    badge: 'Most Popular',
+    features: [
+      'Everything in Base',
+      'GBP posting 4x/week (Mon–Fri)',
+      'Social posting: Google, Facebook, Instagram',
+      'Reputation monitoring across all mentions',
+      'Competitor rank tracking (top 5 keywords)',
+      'Monthly local SEO performance dashboard',
+    ],
+  },
+  {
+    name: 'Elite',
+    price: 1197,
+    period: '/mo',
+    features: [
+      'Everything in Pro',
+      'Google Ads management (local search only)',
+      'Systematic review acquisition outreach',
+      'Dedicated local SEO strategist',
+    ],
+  },
+];
+
+export default function LocalSeoUpsell({ currentTier = 'none' }: { currentTier?: 'base' | 'pro' | 'elite' | 'none' }) {
+  const [selectedTier, setSelectedTier] = useState<string | null>(null);
+  const isActive = currentTier !== 'none';
+
+  const activeTierIndex = currentTier !== 'none'
+    ? SEO_TIERS.findIndex(t => t.name.toLowerCase() === currentTier)
+    : -1;
+
+  return (
+    <section className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-slate-900 to-slate-800 px-8 py-6 text-white">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-emerald-500/20 rounded-xl flex items-center justify-center">
+            <MapPin size={20} className="text-emerald-400" />
+          </div>
+          <div>
+            <h3 className="text-lg font-bold">Local SEO Manager</h3>
+            <p className="text-slate-400 text-xs">Own your local search presence</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Current status */}
+      {isActive && activeTierIndex >= 0 && (
+        <div className="px-8 py-4 bg-emerald-50 border-b border-emerald-100 flex items-center gap-2">
+          <CheckCircle2 className="text-emerald-600" size={14} />
+          <span className="text-emerald-700 text-xs font-bold">
+            {SEO_TIERS[activeTierIndex].name} tier active
+          </span>
+        </div>
+      )}
+
+      {/* Tier cards */}
+      <div className="p-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          {SEO_TIERS.map((tier, index) => {
+            const isCurrentTier = currentTier !== 'none' && tier.name.toLowerCase() === currentTier;
+            const isUpgrade = isActive && index > activeTierIndex;
+
+            return (
+              <div
+                key={tier.name}
+                className={`relative rounded-2xl border-2 p-6 transition-all ${
+                  tier.highlighted
+                    ? 'border-emerald-200 bg-emerald-50/30'
+                    : isCurrentTier
+                    ? 'border-blue-200 bg-blue-50/30'
+                    : 'border-slate-200 bg-slate-50/30'
+                } ${isUpgrade ? 'opacity-80' : ''}`}
+              >
+                {tier.badge && (
+                  <div className="absolute -top-3 left-4">
+                    <span className="bg-emerald-500 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full">
+                      {tier.badge}
+                    </span>
+                  </div>
+                )}
+                {isCurrentTier && (
+                  <div className="absolute -top-3 left-4">
+                    <span className="bg-blue-500 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full">
+                      Active
+                    </span>
+                  </div>
+                )}
+
+                <div className="mb-4">
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{tier.name}</p>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-3xl font-black text-slate-900">${tier.price.toLocaleString()}</span>
+                    <span className="text-sm text-slate-400">{tier.period}</span>
+                  </div>
+                </div>
+
+                <ul className="space-y-2 mb-6">
+                  {tier.features.map((feature, i) => (
+                    <li key={i} className="flex items-start gap-2 text-xs text-slate-600">
+                      <CheckCircle2 className={`shrink-0 mt-0.5 ${tier.highlighted ? 'text-emerald-500' : 'text-slate-400'}`} size={12} />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+
+                {isCurrentTier ? (
+                  <div className="py-2.5 text-center">
+                    <span className="text-blue-600 text-xs font-bold">Current Plan</span>
+                  </div>
+                ) : isUpgrade ? (
+                  <button
+                    onClick={() => setSelectedTier(tier.name)}
+                    className="w-full py-2.5 bg-slate-900 text-white rounded-xl text-xs font-bold hover:bg-slate-800 transition-all"
+                  >
+                    Upgrade to {tier.name}
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setSelectedTier(tier.name)}
+                    className={`w-full py-2.5 rounded-xl text-xs font-bold transition-all ${
+                      tier.highlighted
+                        ? 'bg-emerald-500 text-white hover:bg-emerald-600'
+                        : 'bg-slate-200 text-slate-600 hover:bg-slate-300'
+                    }`}
+                  >
+                    Get Started
+                  </button>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* CTA */}
+        {selectedTier && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="border-t border-slate-100 pt-6 flex items-center justify-between"
+          >
+            <div>
+              <p className="text-sm font-bold text-slate-900">
+                {selectedTier} selected — ${SEO_TIERS.find(t => t.name === selectedTier)?.price.toLocaleString()}/mo
+              </p>
+              <p className="text-xs text-slate-500">Billed monthly. Cancel anytime after 30 days.</p>
+            </div>
+            <button className="px-6 py-3 bg-slate-900 text-white rounded-xl font-bold text-sm hover:bg-slate-800 transition-all flex items-center gap-2 group">
+              Start {selectedTier}
+              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </button>
+          </motion.div>
+        )}
+
+        {!selectedTier && !isActive && (
+          <p className="text-center text-xs text-slate-400 font-medium">
+            Choose a tier to get started
+          </p>
+        )}
+      </div>
+    </section>
+  );
+}
+
+export function LocalSeoPitch() {
+  return (
+    <section className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 text-white overflow-hidden relative border border-slate-700">
+      <div className="absolute top-0 right-0 w-40 h-40 bg-emerald-500/20 rounded-full blur-[80px]" />
+
+      <div className="relative z-10">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-emerald-500/20 rounded-xl flex items-center justify-center">
+            <MapPin size={20} className="text-emerald-400" />
+          </div>
+          <div>
+            <h3 className="text-lg font-bold">Local SEO Manager</h3>
+            <p className="text-slate-400 text-xs">Own the map pack and local search results</p>
+          </div>
+        </div>
+
+        <p className="text-slate-300 text-sm mb-6 leading-relaxed">
+          We post to your Google Business Profile, manage reviews, monitor citations, and track your rankings. Starting at <span className="text-white font-bold">$497/mo</span>.
+        </p>
+
+        <div className="space-y-3 mb-6">
+          {[
+            { icon: <MapPin size={14} />, text: 'Google Business Profile posting (2x/week)' },
+            { icon: <Star size={14} />, text: 'Review response management' },
+            { icon: <TrendingUp size={14} />, text: 'Local rank tracking + monthly report' },
+            { icon: <Megaphone size={14} />, text: 'Social posting: Google, Facebook, Instagram' },
+          ].map((item, i) => (
+            <div key={i} className="flex items-center gap-2 text-sm text-slate-300">
+              <span className="text-emerald-400 shrink-0">{item.icon}</span>
+              {item.text}
+            </div>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          <div className="bg-white/5 rounded-xl p-3 text-center border border-white/10">
+            <p className="text-[10px] font-black text-slate-500 uppercase mb-1">Base</p>
+            <p className="text-xl font-black">$497<span className="text-sm font-normal text-slate-400">/mo</span></p>
+          </div>
+          <div className="bg-emerald-500/10 rounded-xl p-3 text-center border border-emerald-500/20">
+            <p className="text-[10px] font-black text-emerald-400 uppercase mb-1">Pro</p>
+            <p className="text-xl font-black">$797<span className="text-sm font-normal text-emerald-300">/mo</span></p>
+          </div>
+          <div className="bg-white/5 rounded-xl p-3 text-center border border-white/10">
+            <p className="text-[10px] font-black text-slate-500 uppercase mb-1">Elite</p>
+            <p className="text-xl font-black">$1,197<span className="text-sm font-normal text-slate-400">/mo</span></p>
+          </div>
+        </div>
+
+        <button className="w-full py-4 bg-emerald-500 text-white rounded-xl font-black hover:bg-emerald-600 transition-all text-sm flex items-center justify-center gap-2 group">
+          Add Local SEO
+          <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+        </button>
+      </div>
+    </section>
+  );
+}
