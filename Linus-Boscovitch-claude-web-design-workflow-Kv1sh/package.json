@@ -10,7 +10,9 @@
     "typecheck": "tsc --noEmit",
     "v0": "npx v0 add",
     "setup": "bash scripts/setup.sh",
-    "sync-design": "bash scripts/sync-design.sh"
+    "sync-design": "bash scripts/sync-design.sh",
+    "deploy": "wrangler pages deploy out",
+    "pages:build": "next build && wrangler pages deploy out"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.0",
@@ -30,6 +32,7 @@
     "eslint": "^9",
     "eslint-config-next": "^16.2.4",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "^3.114.17"
   }
 }
