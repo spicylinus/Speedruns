@@ -1,0 +1,27 @@
+/*
+Theme Name:   Social Linus
+Theme URI:    https://sociallinus.com
+Description:  Hello Elementor child theme for Social Linus Web Services. Brand tokens are defined in assets/brand.css and loaded via functions.php. All page layouts are built in Elementor Pro.
+Author:       Social Linus Web Services
+Author URI:   https://sociallinus.com
+Template:     hello-elementor
+Version:      1.0.0
+Text Domain:  social-linus
+*/
+
+/*
+  Base styles beyond what Hello Elementor provides.
+  The bulk of the brand system lives in assets/brand.css.
+  Elementor global colors/typography come from the kit import.
+*/
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent FOUC on animated elements before Elementor JS loads */
+[data-aos] {
+  opacity: 0;
+  transition-property: opacity, transform;
+}

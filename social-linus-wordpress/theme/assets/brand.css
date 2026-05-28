@@ -1,0 +1,230 @@
+/*
+  Social Linus — Brand CSS
+  ========================
+  Custom properties used site-wide. Reference these in Elementor's
+  "Custom CSS" panels instead of hardcoding hex values.
+
+  To adapt for a new client:
+    1. Swap all hex values in :root to match their brand palette
+    2. Update --font-display, --font-body, --font-mono to their Google Fonts
+    3. Update elementor/global-kit.json to match
+*/
+
+:root {
+  /* ── Brand Colors ─────────────────────────────────── */
+  --color-void:         #0D0F12;   /* Primary dark — hero bg, nav, dark sections  */
+  --color-cobalt:       #1547E8;   /* Brand primary — CTA buttons, links, stats   */
+  --color-cobalt-hover: #0f3bc2;   /* Cobalt hover state                          */
+  --color-ember:        #FF4D1C;   /* Accent / urgency — one per section max      */
+  --color-ember-hover:  #e0421a;   /* Ember hover state                           */
+  --color-frost:        #EBF2FF;   /* Tinted section bg — testimonials, alt rows  */
+  --color-slate:        #4A5568;   /* Body copy on light backgrounds only         */
+  --color-white:        #FFFFFF;
+
+  /* ── Typography ───────────────────────────────────── */
+  --font-display: 'Space Grotesk', system-ui, sans-serif;   /* Headings          */
+  --font-body:    'DM Sans',       system-ui, sans-serif;   /* Paragraphs, UI    */
+  --font-mono:    'Space Mono',    monospace;               /* Stats, eyebrows   */
+
+  /* ── Type Scale ───────────────────────────────────── */
+  --text-display-xl: 72px;    /* Hero headline */
+  --text-h1:         48px;
+  --text-h2:         32px;
+  --text-h3:         24px;
+  --text-body-lg:    18px;
+  --text-body:       15px;
+  --text-stat:       42px;    /* Stat numbers (mono) */
+  --text-eyebrow:    12px;    /* Section labels (mono, uppercase) */
+
+  /* ── Letter Spacing ───────────────────────────────── */
+  --tracking-display-xl: -0.04em;
+  --tracking-h1:         -0.03em;
+  --tracking-h2:         -0.02em;
+  --tracking-h3:         -0.01em;
+  --tracking-stat:       -0.02em;
+  --tracking-eyebrow:     0.2em;
+
+  /* ── Radii ────────────────────────────────────────── */
+  --radius-sm:  4px;
+  --radius:     8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* ── Shadows ──────────────────────────────────────── */
+  --shadow-sm:   0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-base: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg:   0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+
+/* ── Utility Classes ──────────────────────────────────────────
+   Apply in Elementor's "CSS Classes" field or in custom HTML.
+   ─────────────────────────────────────────────────────────── */
+
+/* Section backgrounds */
+.bg-void   { background-color: var(--color-void)   !important; }
+.bg-cobalt { background-color: var(--color-cobalt) !important; }
+.bg-ember  { background-color: var(--color-ember)  !important; }
+.bg-frost  { background-color: var(--color-frost)  !important; }
+.bg-white  { background-color: var(--color-white)  !important; }
+
+/* Text colors */
+.text-void   { color: var(--color-void)   !important; }
+.text-cobalt { color: var(--color-cobalt) !important; }
+.text-ember  { color: var(--color-ember)  !important; }
+.text-frost  { color: var(--color-frost)  !important; }
+.text-slate  { color: var(--color-slate)  !important; }
+.text-white  { color: var(--color-white)  !important; }
+
+
+/* ── Section Label (Eyebrow) ──────────────────────────────────
+   Usage: add class "eyebrow" to a Text widget above each H2.
+   ─────────────────────────────────────────────────────────── */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-eyebrow);
+  font-weight: 400;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-ember);
+  display: block;
+  margin-bottom: 12px;
+}
+
+/* Eyebrow on dark backgrounds — use .eyebrow.eyebrow--light */
+.eyebrow--light {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+
+/* ── Stat Number ──────────────────────────────────────────────
+   Usage: add class "stat-number" to Text widgets for metrics.
+   ─────────────────────────────────────────────────────────── */
+.stat-number {
+  font-family: var(--font-mono);
+  font-size: var(--text-stat);
+  font-weight: 700;
+  letter-spacing: var(--tracking-stat);
+  color: var(--color-cobalt);
+  line-height: 1;
+}
+
+
+/* ── Heading Styles ───────────────────────────────────────────
+   Elementor handles heading sizes via its typography controls.
+   These classes add the letter-spacing that matches the design.
+   ─────────────────────────────────────────────────────────── */
+.heading-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-display-xl);
+  letter-spacing: var(--tracking-display-xl);
+  line-height: 1.05;
+}
+
+.heading-h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-h2);
+  letter-spacing: var(--tracking-h2);
+  line-height: 1.2;
+}
+
+.heading-h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--text-h3);
+  letter-spacing: var(--tracking-h3);
+}
+
+
+/* ── Body Text on Dark Backgrounds ───────────────────────────
+   Use these on text elements inside dark (bg-void) sections.
+   ─────────────────────────────────────────────────────────── */
+.body-on-dark {
+  color: rgba(255, 255, 255, 0.75);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.65;
+}
+
+.label-on-dark {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+
+/* ── Card Base ────────────────────────────────────────────────
+   Apply to Elementor container widgets used as cards.
+   ─────────────────────────────────────────────────────────── */
+.card {
+  background-color: var(--color-frost);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.card--dark {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card--dark:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.card--white {
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+
+/* ── Button Overrides ─────────────────────────────────────────
+   Elementor button styles — use Elementor's button widget and
+   apply global styles via the kit. These classes patch specific
+   variants that Elementor's kit doesn't cover natively.
+   ─────────────────────────────────────────────────────────── */
+.btn-cobalt {
+  background-color: var(--color-cobalt) !important;
+  color: var(--color-white) !important;
+  border-radius: var(--radius) !important;
+  font-family: var(--font-body) !important;
+  font-weight: 500 !important;
+  transition: background-color 0.2s ease, transform 0.15s ease !important;
+}
+
+.btn-cobalt:hover {
+  background-color: var(--color-cobalt-hover) !important;
+  transform: scale(1.02) !important;
+}
+
+.btn-ghost {
+  background-color: transparent !important;
+  border: 2px solid var(--color-cobalt) !important;
+  color: var(--color-cobalt) !important;
+}
+
+.btn-ember {
+  background-color: var(--color-ember) !important;
+  color: var(--color-white) !important;
+}
+
+.btn-ember:hover {
+  background-color: var(--color-ember-hover) !important;
+}
+
+
+/* ── Reduced Motion ───────────────────────────────────────────
+   Respect user preference. Elementor's entrance animations
+   are suppressed when the user has requested reduced motion.
+   ─────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
