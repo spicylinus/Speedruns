@@ -3,8 +3,11 @@
 import React from 'react';
 import { StyleWrapper } from '@/components/design-system/StyleWrapper';
 import { motion } from 'framer-motion';
+import { BUSINESSES, formatCityStateZip } from '@/lib/business-info';
+import { LocalBusinessJsonLd } from '@/components/seo/LocalBusinessJsonLd';
 
 export default function SpruceSalonMockup() {
+  const business = BUSINESSES['spruce-salon'];
   const fadeUp = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
@@ -13,14 +16,15 @@ export default function SpruceSalonMockup() {
 
   return (
     <StyleWrapper style="editorial" className="min-h-screen bg-[var(--color-background)] text-[var(--color-text)] font-[var(--font-sans)]">
+      <LocalBusinessJsonLd business={business} />
       {/* Navigation */}
       <nav className="flex items-center justify-between px-8 py-6 border-b border-[var(--color-border)] sticky top-0 bg-[var(--color-background)] z-50">
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="text-2xl font-bold font-[var(--font-display)] tracking-tight"
+          className="text-2xl font-bold font-[var(--font-display)] tracking-tight uppercase"
         >
-          SPRUCE SALON
+          {business.name}
         </motion.div>
         <div className="hidden md:flex gap-8 text-xs uppercase tracking-[0.2em]">
           {['Services', 'Portfolio', 'Our Story', 'Contact'].map((item, i) => (
@@ -51,7 +55,7 @@ export default function SpruceSalonMockup() {
           {...fadeUp}
           className="text-[10px] uppercase tracking-[0.4em] mb-8 opacity-60 block"
         >
-          Established 2018 — Austin, TX
+          Established {business.foundingDate} — {business.address.locality}, {business.address.region}
         </motion.span>
         <motion.h1 
           initial={{ opacity: 0, y: 40 }}
@@ -167,14 +171,12 @@ export default function SpruceSalonMockup() {
               We recommend booking 2-3 weeks in advance. For first-time color clients, a consultation is required.
             </p>
             <div className="space-y-2 text-[10px] uppercase tracking-widest font-bold">
-              <div className="flex justify-between py-2 border-b border-[var(--color-border)]">
-                <span>Tuesday – Friday</span>
-                <span>10am – 8pm</span>
-              </div>
-              <div className="flex justify-between py-2 border-b border-[var(--color-border)]">
-                <span>Saturday</span>
-                <span>9am – 6pm</span>
-              </div>
+              {business.openingHoursDisplay?.map((slot) => (
+                <div key={slot.days} className="flex justify-between py-2 border-b border-[var(--color-border)]">
+                  <span>{slot.days}</span>
+                  <span>{slot.hours}</span>
+                </div>
+              ))}
             </div>
           </div>
           <div className="p-16 bg-[var(--color-background)]">
@@ -203,7 +205,7 @@ export default function SpruceSalonMockup() {
 
       <footer className="px-8 py-24 border-t border-[var(--color-border)]">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
-          <div className="text-xl font-bold font-[var(--font-display)]">SPRUCE SALON</div>
+          <div className="text-xl font-bold font-[var(--font-display)] uppercase">{business.name}</div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-16 text-[10px] uppercase tracking-widest font-bold">
             <div className="flex flex-col gap-4">
               <span className="opacity-40">Follow</span>
@@ -212,17 +214,17 @@ export default function SpruceSalonMockup() {
             </div>
             <div className="flex flex-col gap-4">
               <span className="opacity-40">Visit</span>
-              <span>1201 S Congress Ave<br />Austin, TX 78704</span>
+              <span>{business.address.street}<br />{formatCityStateZip(business)}</span>
             </div>
             <div className="flex flex-col gap-4">
               <span className="opacity-40">Connect</span>
-              <a href="mailto:hello@spruceaustin.com" className="hover:text-[var(--color-accent)]">hello@spruceaustin.com</a>
-              <span>512.555.0199</span>
+              <a href={`mailto:${business.email}`} className="hover:text-[var(--color-accent)]">{business.email}</a>
+              <span>{business.phone.display}</span>
             </div>
           </div>
         </div>
         <div className="max-w-6xl mx-auto mt-24 pt-8 border-t border-[var(--color-border)] opacity-30 text-[9px] uppercase tracking-[0.2em] flex justify-between">
-          <span>© 2026 Spruce Salon</span>
+          <span>© 2026 {business.name}</span>
           <span>Privacy / Terms</span>
         </div>
       </footer>

@@ -1,0 +1,84 @@
+{
+  "sd-plumbing": [
+    {
+      "platform": "Google Business Profile",
+      "dashboardUrl": "https://business.google.com",
+      "updateMethod": "api",
+      "status": "unchecked"
+    },
+    {
+      "platform": "Yelp",
+      "dashboardUrl": "https://biz.yelp.com",
+      "updateMethod": "dashboard",
+      "status": "unchecked"
+    },
+    {
+      "platform": "Bing Places",
+      "dashboardUrl": "https://www.bingplaces.com",
+      "updateMethod": "dashboard",
+      "status": "unchecked"
+    },
+    {
+      "platform": "Apple Maps (Business Connect)",
+      "dashboardUrl": "https://businessconnect.apple.com",
+      "updateMethod": "dashboard",
+      "status": "unchecked"
+    },
+    {
+      "platform": "Facebook",
+      "dashboardUrl": "https://business.facebook.com",
+      "updateMethod": "dashboard",
+      "status": "unchecked"
+    },
+    {
+      "platform": "BBB",
+      "dashboardUrl": "https://www.bbb.org/get-accredited",
+      "updateMethod": "dashboard",
+      "status": "unchecked"
+    },
+    {
+      "platform": "Angi",
+      "dashboardUrl": "https://office.angi.com",
+      "updateMethod": "dashboard",
+      "status": "unchecked"
+    }
+  ],
+  "spruce-salon": [
+    {
+      "platform": "Google Business Profile",
+      "dashboardUrl": "https://business.google.com",
+      "updateMethod": "api",
+      "status": "unchecked"
+    },
+    {
+      "platform": "Yelp",
+      "dashboardUrl": "https://biz.yelp.com",
+      "updateMethod": "dashboard",
+      "status": "unchecked"
+    },
+    {
+      "platform": "Bing Places",
+      "dashboardUrl": "https://www.bingplaces.com",
+      "updateMethod": "dashboard",
+      "status": "unchecked"
+    },
+    {
+      "platform": "Apple Maps (Business Connect)",
+      "dashboardUrl": "https://businessconnect.apple.com",
+      "updateMethod": "dashboard",
+      "status": "unchecked"
+    },
+    {
+      "platform": "Facebook",
+      "dashboardUrl": "https://business.facebook.com",
+      "updateMethod": "dashboard",
+      "status": "unchecked"
+    },
+    {
+      "platform": "Instagram",
+      "dashboardUrl": "https://business.instagram.com",
+      "updateMethod": "dashboard",
+      "status": "unchecked"
+    }
+  ]
+}

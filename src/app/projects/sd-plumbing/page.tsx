@@ -4,8 +4,12 @@ import React from 'react';
 import { StyleWrapper } from '@/components/design-system/StyleWrapper';
 import { motion } from 'framer-motion';
 import { Phone, Clock, Shield, Award, CheckCircle2, ChevronRight, Droplets, Flame, Hammer, Trash2, Bath, AlertTriangle } from 'lucide-react';
+import { BUSINESSES, telHref } from '@/lib/business-info';
+import { LocalBusinessJsonLd } from '@/components/seo/LocalBusinessJsonLd';
 
 export default function SDPlumbingMockup() {
+  const business = BUSINESSES['sd-plumbing'];
+  const [nameMark, nameRest] = business.name.split(' ');
   const fadeIn = {
     initial: { opacity: 0 },
     animate: { opacity: 1 },
@@ -14,6 +18,7 @@ export default function SDPlumbingMockup() {
 
   return (
     <StyleWrapper style="swiss" className="min-h-screen bg-[var(--color-background)] text-[var(--color-text)] font-[var(--font-sans)]">
+      <LocalBusinessJsonLd business={business} />
       {/* Emergency Header */}
       <motion.div 
         initial={{ y: -50 }}
@@ -22,14 +27,14 @@ export default function SDPlumbingMockup() {
       >
         <span className="inline-flex items-center gap-2">
           <AlertTriangle className="w-6 h-6 animate-pulse" />
-          24/7 Emergency Service: (512) 555-0123 — Call Now for 60-Min Arrival
+          24/7 Emergency Service: {business.phone.display} — Call Now for 60-Min Arrival
         </span>
       </motion.div>
 
       {/* Main Nav */}
       <nav className="flex flex-wrap items-center justify-between px-8 py-8 border-b-8 border-[var(--color-text)]">
-        <div className="text-5xl font-black italic tracking-tighter leading-none mb-4 md:mb-0">
-          S&D <br /> PLUMBING
+        <div className="text-5xl font-black italic tracking-tighter leading-none mb-4 md:mb-0 uppercase">
+          {nameMark} <br /> {nameRest}
         </div>
         <div className="flex flex-wrap gap-x-12 gap-y-4 text-sm font-black uppercase">
           {['Emergency', 'Residential', 'Commercial', 'Reviews', 'About'].map((item) => (
@@ -39,7 +44,7 @@ export default function SDPlumbingMockup() {
             </a>
           ))}
         </div>
-        <a href="tel:5125550123" className="px-10 py-5 bg-[var(--color-text)] text-[var(--color-background)] font-black text-2xl hover:bg-[var(--color-primary)] transition-colors flex items-center gap-3">
+        <a href={telHref(business)} className="px-10 py-5 bg-[var(--color-text)] text-[var(--color-background)] font-black text-2xl hover:bg-[var(--color-primary)] transition-colors flex items-center gap-3">
           <Phone className="w-6 h-6" />
           CALL NOW
         </a>
@@ -166,7 +171,7 @@ export default function SDPlumbingMockup() {
             </div>
             <div className="space-y-2">
               <label className="text-xs font-black uppercase opacity-60">Phone Number</label>
-              <input type="tel" placeholder="512-555-0123" className="w-full p-5 border-4 border-[var(--color-text)] bg-[var(--color-background)] font-bold uppercase focus:outline-none focus:border-[var(--color-primary)] transition-colors" />
+              <input type="tel" placeholder={business.phone.display} className="w-full p-5 border-4 border-[var(--color-text)] bg-[var(--color-background)] font-bold uppercase focus:outline-none focus:border-[var(--color-primary)] transition-colors" />
             </div>
             <div className="space-y-2">
               <label className="text-xs font-black uppercase opacity-60">Service Needed</label>
@@ -189,7 +194,7 @@ export default function SDPlumbingMockup() {
       {/* Social Proof Footer */}
       <footer className="border-t-8 border-[var(--color-text)] px-8 py-20 bg-[var(--color-surface-muted)]">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12 font-black uppercase text-center md:text-left">
-          <div className="text-4xl italic tracking-tighter leading-none">S&D <br /> PLUMBING</div>
+          <div className="text-4xl italic tracking-tighter leading-none uppercase">{nameMark} <br /> {nameRest}</div>
           <div className="flex flex-wrap justify-center gap-12 text-sm tracking-widest">
             <div className="flex flex-col gap-2">
               <span className="opacity-40">Licensing</span>
@@ -203,12 +208,12 @@ export default function SDPlumbingMockup() {
             </div>
             <div className="flex flex-col gap-2">
               <span className="opacity-40">Location</span>
-              <span>Austin, TX & Surrounding</span>
-              <span>(512) 555-0123</span>
+              <span>{business.areaServed}</span>
+              <span>{business.phone.display}</span>
             </div>
           </div>
           <div className="text-[10px] opacity-40">
-            © 2026 S&D Plumbing Austin. <br />All Rights Reserved.
+            © 2026 {business.legalName}. <br />All Rights Reserved.
           </div>
         </div>
       </footer>

@@ -1,9 +1,10 @@
 import { DeliveryData } from '@/types/delivery';
+import { BUSINESSES } from '@/lib/business-info';
 
 export const CLIENT_DELIVERIES: Record<string, DeliveryData> = {
   'sd-plumbing': {
-    clientName: 'S & D Plumbing',
-    websiteUrl: 'https://sdplumbing.com',
+    clientName: BUSINESSES['sd-plumbing'].name,
+    websiteUrl: BUSINESSES['sd-plumbing'].url,
     tier: 'SEO',
     startDate: 'May 1, 2026',
     nextReportDate: 'June 1, 2026',
@@ -105,8 +106,8 @@ export const CLIENT_DELIVERIES: Record<string, DeliveryData> = {
     ]
   },
   'spruce-salon': {
-    clientName: 'Spruce Salon',
-    websiteUrl: 'https://www.sprucesalonaustin.com/',
+    clientName: BUSINESSES['spruce-salon'].name,
+    websiteUrl: BUSINESSES['spruce-salon'].url,
     tier: 'LeadGen',
     startDate: 'May 10, 2026',
     nextReportDate: 'June 10, 2026',

@@ -3,11 +3,12 @@
 import React from 'react';
 import { ExternalLink, Globe, Layout, Smartphone } from 'lucide-react';
 import Link from 'next/link';
+import { BUSINESSES } from '@/lib/business-info';
 
 const ACTIVE_PROJECTS = [
   {
     id: 'spruce-salon',
-    name: 'Spruce Salon',
+    name: BUSINESSES['spruce-salon'].name,
     url: '/projects/spruce-salon/',
     style: 'Editorial',
     status: 'Live',
@@ -15,7 +16,7 @@ const ACTIVE_PROJECTS = [
   },
   {
     id: 'sd-plumbing',
-    name: 'S & D Plumbing',
+    name: BUSINESSES['sd-plumbing'].name,
     url: '/projects/sd-plumbing/',
     style: 'Swiss',
     status: 'Live',
